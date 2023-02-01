@@ -403,7 +403,7 @@ Creates and returns a new spot.
 * Require Authentication: true
 * Request
   * Method: POST
-  * URL: host/spots/newSpot
+  * URL: /spots/newSpot
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -478,7 +478,7 @@ Create and return a new image for a spot specified by id.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: PUT
-  * URL: host/spots/:spotId/newImg
+  * URL: /spots/:spotId/newImg
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -525,7 +525,7 @@ Updates and returns an existing spot.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: PUT
-  * URL: /host/spots/:spotId/update
+  * URL: /spots/:spotId/update
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -613,7 +613,7 @@ Deletes an existing spot.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: DELETE
-  * URL: /host/spots/:spotId/delete
+  * URL: /spots/:spotId/delete
   * Body: none
 
 * Successful Response
@@ -1205,7 +1205,7 @@ Update and return an existing booking.
 * Require proper authorization: Booking must belong to the current user
 * Request
   * Method: PUT
-  * URL: /spots/:spotId/bookings/:bookingId/update
+  * URL: /bookings/:bookingId/update
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1303,7 +1303,7 @@ Delete an existing booking.
   Spot must belong to the current user
 * Request
   * Method: Delete
-  * URL: /user/:userID/bookings/:bookingId/delete
+  * URL: /bookings/:bookingId/delete
   * Body: none
 
 * Successful Response

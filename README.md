@@ -1,8 +1,7 @@
 # AirBnB Clone
 
 ## Database Schema Design
-
-![airbnb-dbdiagram]
+![finally](https://user-images.githubusercontent.com/104410254/216780622-bc756a69-2367-46e1-a13c-89328e322637.png)
 
 [airbnb-dbdiagram]: ../assets/airbnb_dbdiagram.png
 
@@ -1483,5 +1482,6 @@ Return spots filtered by query parameters.
     ```
     
     
-![new](https://user-images.githubusercontent.com/104410254/216234416-4342bcc1-0ad1-4985-8e60-b643839c6328.png)
+
+
 

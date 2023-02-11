@@ -9,6 +9,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.removeColumn('User', 'firstName', { type: Sequelize.STRING });
+    await queryInterface.removeColumn('Users', 'firstName', { type: Sequelize.STRING });
   }
 };

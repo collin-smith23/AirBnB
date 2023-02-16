@@ -17,7 +17,8 @@ module.exports = {
         type: Sequelize.BOOLEAN
       },
       url: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: 'false'
       },
       createdAt: {
         allowNull: false,

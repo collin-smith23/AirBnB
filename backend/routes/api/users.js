@@ -29,11 +29,13 @@ const validateSignup = [
 
 // Sign up
 
-router.post( '/', validateSignup, async (req, res) => {
+// router.post( '/', validateSignup, async (req, res) => {
+router.post( '/', async (req, res) => {
   const { firstName, lastName, email, password, username } = req.body;
 
   const emailExist = await User.findOne({where: {email}});
   const usernameExist = await User.findOne({where: {username}});
+
 
   let invalidCredsError = {
     "message": "Validation error",
@@ -70,6 +72,9 @@ router.post( '/', validateSignup, async (req, res) => {
     }
     return res.json({invalidCredsError})
   }
+
+
+
   if (emailExist){
     duplicateCredsError.errors = {
       "email": "User with that email already exists"
@@ -83,11 +88,13 @@ router.post( '/', validateSignup, async (req, res) => {
     return res.json({duplicateCredsError})
   }
 
+
+
   if (!emailExist && !usernameExist) {
     const user = await User.signup({ firstName, lastName, email, username, password });
     await setTokenCookie(res, user);
     return res.json({
-      user
+      user,
     })
   }
 });

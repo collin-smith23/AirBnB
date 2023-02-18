@@ -26,13 +26,13 @@ const validateSignup = [
       .exists({ checkFalsy: true })
       .isLength({ min: 6 })
       .withMessage('Password must be 6 characters or more.'),
-      handleValidationErrors,
-    check("firstName")
+      check("firstName")
       .exists({ checkFalsy: true})
       .withMessage("First name is required"),
-    check("lastName")
+      check("lastName")
       .exists({ checkFalsy: true})
-      .withMessage("Last name is required")
+      .withMessage("Last name is required"),
+      handleValidationErrors
 ];
 
 // Sign up
@@ -43,6 +43,7 @@ router.post( '/', async (req, res) => {
 
   const emailExist = await User.findOne({where: {email}});
   const usernameExist = await User.findOne({where: {username}});
+
 
 
   let invalidCredsError = {

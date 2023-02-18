@@ -30,8 +30,10 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   const {address, city, state, country, lat, lng, name, description, price} = req.body
+  const userId = req.user.id
 
   const newSpot = await Spot.create({
+    ownerId: userId,
     address,
     city,
     state,

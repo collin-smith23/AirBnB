@@ -28,4 +28,25 @@ router.get('/', async (req, res) => {
   return res.json(allSpots)
 })
 
+router.post('/', async (req, res) => {
+  const {address, city, state, country, lat, lng, name, description, price} = req.body
+
+  const newSpot = await Spot.create({
+    address,
+    city,
+    state,
+    country,
+    lat,
+    lng,
+    name,
+    description,
+    price
+  })
+
+  if(newSpot){
+    return res.status(201).json(newSpot)
+  }
+
+})
+
 module.exports = router;

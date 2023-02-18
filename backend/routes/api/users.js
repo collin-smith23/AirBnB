@@ -11,20 +11,28 @@ const validateSignup = [
   check('email')
     .exists({ checkFalsy: true})
     .isEmail()
-    .withMessage('Please provide a valid email.'),
+    .withMessage('Invalid email'),
   check('username')
-    .exists({ checkFalsy: true })
     .isLength({ min:4 })
     .withMessage('Please provide a username with at least 4 characters.'),
     check('username')
       .not()
       .isEmail()
       .withMessage('Username cannot be an email'),
+    check('username')
+      .exists({ checkFalsy: true})
+      .withMessage("Username is required"),
     check('password')
       .exists({ checkFalsy: true })
       .isLength({ min: 6 })
       .withMessage('Password must be 6 characters or more.'),
-      handleValidationErrors
+      handleValidationErrors,
+    check("firstName")
+      .exists({ checkFalsy: true})
+      .withMessage("First name is required"),
+    check("lastName")
+      .exists({ checkFalsy: true})
+      .withMessage("Last name is required")
 ];
 
 // Sign up
@@ -73,7 +81,13 @@ router.post( '/', async (req, res) => {
     return res.json({invalidCredsError})
   }
 
-
+  if (emailExist && usernameExist){
+    duplicateCredsError.errors = {
+      "email": "User with that email already exists",
+      "username": "User with that username already exists"
+    }
+    return res.json({duplicateCredsError})
+  }
 
   if (emailExist){
     duplicateCredsError.errors = {
@@ -92,9 +106,14 @@ router.post( '/', async (req, res) => {
 
   if (!emailExist && !usernameExist) {
     const user = await User.signup({ firstName, lastName, email, username, password });
-    await setTokenCookie(res, user);
+   const token = await setTokenCookie(res, user);
     return res.json({
-      user,
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      username: user.username,
+      token: token
     })
   }
 });

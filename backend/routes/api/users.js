@@ -37,8 +37,8 @@ const validateSignup = [
 
 // Sign up
 
-// router.post( '/', validateSignup, async (req, res) => {
-router.post( '/', async (req, res) => {
+router.post( '/', validateSignup, async (req, res) => {
+// router.post( '/', async (req, res) => {
   const { firstName, lastName, email, password, username } = req.body;
 
   const emailExist = await User.findOne({where: {email}});
@@ -46,49 +46,49 @@ router.post( '/', async (req, res) => {
 
 
 
-  let invalidCredsError = {
-    "message": "Validation error",
-    "statusCode": 400,
-    "errors": {}
-  }
+  // let invalidCredsError = {
+  //   "message": "Validation error",
+  //   "statusCode": 400,
+  //   "errors": {}
+  // }
   let duplicateCredsError = {
     "message": "User already exists",
     "statusCode": 403,
     "errors": {}
   }
 
-  if (!email || email === ""){
-    invalidCredsError.errors = {
-      "email": "Invalid email"
-    }
-    return res.json({invalidCredsError})
-  }
-  if (!username || username === ""){
-    invalidCredsError.errors = {
-      "username": "Username is required"
-    }
-    return res.json({invalidCredsError})
-  }
-  if (!firstName || firstName === ""){
-    invalidCredsError.errors = {
-      "firstName": "First Name is required"
-    }
-    return res.json({invalidCredsError})
-  }
-  if (!lastName || lastName === ""){
-    invalidCredsError.errors = {
-      "lastName": "Last Name is required"
-    }
-    return res.json({invalidCredsError})
-  }
+  // if (!email || email === ""){
+  //   invalidCredsError.errors = {
+  //     "email": "Invalid email"
+  //   }
+  //   return res.json({invalidCredsError})
+  // }
+  // if (!username || username === ""){
+  //   invalidCredsError.errors = {
+  //     "username": "Username is required"
+  //   }
+  //   return res.json({invalidCredsError})
+  // }
+  // if (!firstName || firstName === ""){
+  //   invalidCredsError.errors = {
+  //     "firstName": "First Name is required"
+  //   }
+  //   return res.json({invalidCredsError})
+  // }
+  // if (!lastName || lastName === ""){
+  //   invalidCredsError.errors = {
+  //     "lastName": "Last Name is required"
+  //   }
+  //   return res.json({invalidCredsError})
+  // }
 
-  if (emailExist && usernameExist){
-    duplicateCredsError.errors = {
-      "email": "User with that email already exists",
-      "username": "User with that username already exists"
-    }
-    return res.json({duplicateCredsError})
-  }
+  // if (emailExist && usernameExist){
+  //   duplicateCredsError.errors = {
+  //     "email": "User with that email already exists",
+  //     "username": "User with that username already exists"
+  //   }
+  //   return res.json({duplicateCredsError})
+  // }
 
   if (emailExist){
     duplicateCredsError.errors = {

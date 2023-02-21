@@ -26,36 +26,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Spot',
-    defaultScope: {
-      include: [
-        {
-          association: 'Reviews',
-          attributes: []
-        },
-        {
-          association: 'SpotImages',
-          where: { preview: true},
-          attributes: [],
-        },
-      ],
-      attributes: [
-        'id',
-        'ownerId',
-        'address',
-        'city',
-        'state',
-        'country',
-        'lat',
-        'lng',
-        'name',
-        'description',
-        'price',
-        'createdAt',
-        'updatedAt',
-        [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating'],
-        [Sequelize.col('SpotImages.url'), 'previewImage']
-      ]
-    },
   });
   return Spot;
 };

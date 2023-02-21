@@ -11,7 +11,7 @@ const validateLogin = [
   check('credential')
     .exists({ checkFalsy: true})
     .notEmpty()
-    .withMessage('Please provide a valid email or username.'),
+    .withMessage('Please provide a valid email or username'),
   check('password')
     .exists({ checkFalsy: true})
     .withMessage('Please provide a password'),
@@ -20,19 +20,46 @@ const validateLogin = [
 
 
 // Log in
-
 router.post('/', validateLogin, async (req, res, next) => {
+// router.post('/', async (req, res, next) => {
   const { credential, password} = req.body;
+
+
+
+  // let invalidCredsError = {
+  //   "message": "Validation error",
+  //   "statusCode": 400,
+  //   "errors": {}
+  // }
+
+  // if((!req.body.credential || req.body.credential === '') && (!req.body.password || req.body.password === '')){
+  //   invalidCredsError.errors = {
+  //     "credential" : "Email or username is required",
+  //     "password" : "Password is required"
+  //   };
+  //   return res.json(invalidCredsError)
+  // }
+
+  // if (!req.body.credential || req.body.credential === '') {
+  //   invalidCredsError.errors = {"credential" : "Email or username is required"};
+  //  return res.json(invalidCredsError)
+  // }
+  // if (!req.body.password || req.body.password === '') {
+  //  invalidCredsError.errors = {"password" : "Password is required"};
+  //  return res.json(invalidCredsError)
+  // }
+
 
   const user = await User.login({ credential, password });
 
   if (!user) {
-    const err = new Error('Login failed');
-    err.status = 401;
-    err.title = 'Login failed';
-    err.errors = ['The provided credentials were invalid.']
-    return next(err);
+    res.status(401)
+    return res.json({
+      "message": "Invalid credentials",
+      "statusCode": 401
+    })
   }
+
 
   await setTokenCookie(res, user);
 

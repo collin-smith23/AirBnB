@@ -93,7 +93,7 @@ router.get('/', async (req, res) => {
         attributes: [],
       },
     ],
-    group: ['Spot.id','Reviews.spotId', 'SpotImages.id'],
+    group: ['Spot.id','Reviews.spotId', 'SpotImages.id', 'SpotImages.url'],
     attributes: [
       'id',
       'ownerId',

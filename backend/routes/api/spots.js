@@ -124,7 +124,7 @@ router.post('/', validSpot, handleValidationErrors ,async (req, res) => {
 
 if (user){
     const newSpot = await Spot.create({
-    ownerId: parseInt(userId),
+    ownerId: userId,
     address,
     city,
     state,

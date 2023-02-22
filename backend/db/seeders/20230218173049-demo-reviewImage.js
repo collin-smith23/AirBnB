@@ -12,7 +12,7 @@ module.exports = {
     return queryInterface.bulkInsert(options, [
       {
         reviewId: 1,
-        url: 'https://imgs.search.brave.com/FdcEVC8EwuElK4v2hH5liDB4Lz4iYNt0RViZNF9Bnhs/rs:fit:1200:1024:1/g:ce/aHR0cDovL3d3dy5u/aXZhc2EubGsvd3At/Y29udGVudC91cGxv/YWRzLzIwMTQvMDkv/QW1hemluZy1hcmNo/aXRlY3R1cmUtZGVz/aWducy1sdXh1cnkt/YW5kLWJlYXV0aWZ1/bC1ob3VzZS1leHRl/cmlvcnMtd2l0aC1j/dXJ2aW5nLXN3aW1t/aW5nLXBvb2wtYW5k/LWRlY2std2l0aC1j/b29sLWxpZ2h0aW5n/LXZpZXctZXZlbmlu/Z19uaXZhc2FfbGsu/anBn'
+        url: 'https://imgs.search.brave.com/72Q3AM9fKNL6XR932fXYuwOYq2D91v5cGMoJNxPDZbM/rs:fit:632:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC50/aG1ucHlaakt0YlhQ/YnBLMVFGT2hnSGFG/aiZwaWQ9QXBp'
       },
       {
         reviewId: 2,

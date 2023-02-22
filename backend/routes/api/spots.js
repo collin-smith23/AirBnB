@@ -58,7 +58,7 @@ router.get('/current', async (req, res) => {
         attributes: [],
       },
     ],
-    group: ['Spot.id','Reviews.spotId'],
+    group: ['Spot.id','Reviews.spotId', 'SpotImages.id'],
     attributes: [
       'id',
       'ownerId',
@@ -93,7 +93,7 @@ router.get('/', async (req, res) => {
         attributes: [],
       },
     ],
-    group: ['Spot.id','Reviews.spotId'],
+    group: ['Spot.id','Reviews.spotId', 'SpotImages.id'],
     attributes: [
       'id',
       'ownerId',
@@ -196,7 +196,7 @@ router.get('/:spotId', async (req, res) => {
         attributes: ['id', 'url', 'preview'],
       },
     ],
-    group: ['Spot.id','Reviews.spotId'],
+    group: ['Spot.id','Reviews.spotId', 'SpotImages.id'],
     attributes: [
       'id',
       'ownerId',

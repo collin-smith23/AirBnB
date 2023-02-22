@@ -28,10 +28,6 @@ module.exports = {
       review: {
         type: Sequelize.STRING
       },
-      imageId: {
-        type: Sequelize.INTEGER,
-        references: {model: 'ReviewImages'}
-      },
       stars: {
         type: Sequelize.INTEGER
       },

@@ -8,8 +8,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    options.tableName = 'ReviewImages'
-    await queryInterface.createTable(options, {
+    await queryInterface.createTable('ReviewImages', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -23,7 +22,8 @@ module.exports = {
       reviewId: {
         type: Sequelize.INTEGER,
         allowNull: 'false',
-        references: {model: 'Reviews'}
+        references: {model: 'Reviews'},
+        onDelete: 'CASCADE'
       },
       createdAt: {
         allowNull: false,
@@ -39,6 +39,6 @@ module.exports = {
   },
   async down(queryInterface, Sequelize) {
     options.tableName = 'ReviewImages'
-    await queryInterface.dropTable(options);
+    await queryInterface.dropTable('ReviewImages', options);
   }
 };

@@ -166,7 +166,7 @@ router.post('/:spotId/images', async (req, res) => {
           attributes:[]
       }
       ],
-      spotId: parseInt(spot),
+      spotId: spot.id,
       url,
       preview
     })

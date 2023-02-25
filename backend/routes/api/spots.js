@@ -3,7 +3,7 @@ const express = require('express');
 const { setTokenCookie, requireAuth} = require('../../utils/auth');
 const { User, Spot, SpotImage, Review, ReviewImage, Booking} = require('../../db/models')
 const { check } = require('express-validator');
-const { Sequelize, ValidationError } = require('sequelize')
+const { Sequelize, ValidationError, Op } = require('sequelize')
 const { handleValidationErrors } = require('../../utils/validation');
 const reviewimage = require('../../db/models/reviewimage');
 
@@ -95,18 +95,74 @@ router.get('/current', async (req, res) => {
 
 //get all spots
 router.get('/', async (req, res) => {
+  let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query;
+  page = Number(page);
+  size = Number(size)
+  if (!page) page = 1;
+  if (!size) size = 20
+  const Spots = [];
+
+  //validation error for query
+  const validationError = {
+    "message": "Validation Error",
+    "statusCode": 400,
+    "errors" : {}
+  }
+  if (page < 1){
+    validationError.errors.page = 'Page must be greater than or equal to 1'
+  }
+  if (size < 1){
+    validationError.errors.size = 'Page must be greater than or equal to 1'
+  }
+  if(maxLat){
+  if( maxLat > 90 || Number.isNaN(maxLat)){
+    validationError.errors.maxLat = 'Maximum latitude is invalid'
+  }}
+  if(minLat){
+  if (minLat < -90 || Number.isNaN(minLat)){
+    validationError.errors.minLat = 'Minimum latitude is invalid'
+  }}
+  if(minLng){
+  if (minLng < -180 || Number.isNaN(minLng)){
+    validationError.errors.minLng = 'Minimum longitude is invalid'
+  }}
+  if(maxLng){
+  if(maxLng > 180 || Number.isNaN(maxLng)) {
+    validationError.errors.minLng = 'Minimum longitude is invalid'
+  }}
+  if(minPrice){
+    if(minPrice <= 0 || Number.isNaN(minPrice)){
+      validationError.errors.minPrice = 'Minimum price must be greater than or equal to 0'
+    }
+  }
+  if(maxPrice){
+    if(maxPrice <= 0 || Number.isNaN(maxPrice)){
+      validationError.errors.minPrice = 'Maximum price must be greater than or equal to 0'
+    }
+  }
+
+  if(validationError.errors.hasOwnProperty('page') || validationError.errors.hasOwnProperty('size') ||validationError.errors.hasOwnProperty('maxLat') || validationError.errors.hasOwnProperty('minLat') || validationError.errors.hasOwnProperty('minLng') || validationError.errors.hasOwnProperty('maxLng') || validationError.errors.hasOwnProperty('minPrice') || validationError.errors.hasOwnProperty('maxPrice')){
+    return res.status(400).json({validationError})
+  }
+
+
   const allSpots = await Spot.findAll({
-    include: [
-      {
-        association: 'Reviews',
-        attributes: []
+    where: {
+      lat : {
+        [Op.gte]: minLat || -90,
+        [Op.lte]: maxLat || 90
       },
-      {
-        association: 'SpotImages',
-        attributes: [],
+      lng: {
+        [Op.gte]: minLng || -180,
+        [Op.lte]: maxLng || 180
       },
-    ],
-    group: ['Spot.id','Reviews.spotId', 'SpotImages.id', 'SpotImages.url'],
+      price: {
+        [Op.gte]: minPrice || 0,
+        [Op.lte]: maxPrice || 1000000
+      }
+    },
+    limit: size,
+    offset: Math.abs(size * (page -1)),
     attributes: [
       'id',
       'ownerId',
@@ -121,11 +177,54 @@ router.get('/', async (req, res) => {
       'price',
       'createdAt',
       'updatedAt',
-      [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating'],
-      [Sequelize.col('SpotImages.url'), 'previewImage']
     ],
   });
-  return res.json(allSpots)
+
+  let sum = 0;
+  let avgRating;
+
+  for (let spot of allSpots){
+    sum = 0;
+    let reviews = await Review.findAll({
+      where: {spotId : spot.id},
+      attributes: ['stars']
+    })
+    reviews.forEach(review => {
+      sum += (review.stars)
+    });
+    avgRating = sum/reviews.length
+    let previewImage = await SpotImage.findOne({
+      where: {
+        spotId: spot.id,
+        preview: true
+      },
+      attributes: ['url']
+    })
+    if (previewImage === null){
+      previewImage = {
+        'url': null
+      }
+    }
+    spot = {
+      "id": spot.id,
+      "ownerId": spot.ownerId,
+      "address": spot.address,
+      "city": spot.city,
+      "state": spot.state,
+      "country": spot.country,
+      "lat": spot.lat,
+      "lng": spot.lng,
+      "name": spot.name,
+      "description": spot.description,
+      "price": spot.price,
+      "createdAt": spot.createdAt,
+      "updatedAt": spot.updatedAt,
+      "avgRating": avgRating,
+      "previewImage": previewImage.url
+    }
+    Spots.push(spot)
+  }
+  return res.json({Spots, page, size})
 })
 
 //create a spot

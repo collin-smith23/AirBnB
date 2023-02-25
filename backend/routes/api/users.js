@@ -58,49 +58,44 @@ router.post( '/', async (req, res) => {
   }
 
   if (!email || email === ""){
-    invalidCredsError.errors = {
-      "email": "Invalid email"
-    }
-    return res.json({invalidCredsError})
+    invalidCredsError.errors.email = "Invalid email"
+
+    // return res.json({invalidCredsError})
   }
   if (!username || username === ""){
-    invalidCredsError.errors = {
-      "username": "Username is required"
-    }
-    return res.json({invalidCredsError})
+    invalidCredsError.errors.username = "Username is required"
+
+    // return res.json({invalidCredsError})
   }
   if (!firstName || firstName === ""){
-    invalidCredsError.errors = {
-      "firstName": "First Name is required"
-    }
-    return res.json({invalidCredsError})
+    invalidCredsError.errors.firstName = "First Name is required"
+
+    // return res.json({invalidCredsError})
   }
   if (!lastName || lastName === ""){
-    invalidCredsError.errors = {
-      "lastName": "Last Name is required"
-    }
-    return res.json({invalidCredsError})
+    invalidCredsError.errors.lastName = "Last Name is required"
+
+    // return res.json({invalidCredsError})
   }
 
-  if (emailExist && usernameExist){
-    duplicateCredsError.errors = {
-      "email": "User with that email already exists",
-      "username": "User with that username already exists"
-    }
-    return res.json({duplicateCredsError})
+  if (invalidCredsError.errors.hasOwnProperty('email') || invalidCredsError.errors.hasOwnProperty('username') || invalidCredsError.errors.hasOwnProperty('firstName') || invalidCredsError.errors.hasOwnProperty('lastName')){
+    return res.status(400).json({invalidCredsError})
   }
+
 
   if (emailExist){
-    duplicateCredsError.errors = {
-      "email": "User with that email already exists"
-    }
-    return res.json({duplicateCredsError})
+    duplicateCredsError.errors.email = "User with that email already exists"
+
+    // return res.json({duplicateCredsError})
   }
   if (usernameExist){
-    duplicateCredsError.errors = {
-      "username": "User with that username already exists"
-    }
-    return res.json({duplicateCredsError})
+    duplicateCredsError.errors.username = "User with that username already exists"
+
+    // return res.json({duplicateCredsError})
+  }
+
+  if(duplicateCredsError.errors.hasOwnProperty('email') || duplicateCredsError.errors.hasOwnProperty('username')){
+    return res.status(403).json({duplicateCredsError})
   }
 
 

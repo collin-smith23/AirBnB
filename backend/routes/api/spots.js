@@ -3,7 +3,7 @@ const express = require('express');
 const { setTokenCookie, requireAuth} = require('../../utils/auth');
 const { User, Spot, SpotImage, Review, ReviewImage, Booking} = require('../../db/models')
 const { check } = require('express-validator');
-const { Sequelize } = require('sequelize')
+const { Sequelize, ValidationError } = require('sequelize')
 const { handleValidationErrors } = require('../../utils/validation');
 const reviewimage = require('../../db/models/reviewimage');
 
@@ -129,11 +129,49 @@ router.get('/', async (req, res) => {
 })
 
 //create a spot
-router.post('/', validSpot, handleValidationErrors ,async (req, res) => {
+router.post('/', async (req, res) => {
   const {address, city, state, country, lat, lng, name, description, price} = req.body
   const userId = req.user.id
   const user = Spot.findByPk(userId)
+  //error response validation error
+  const validationError = {
+    "message": "Validation Error",
+    "statusCode": 400,
+    "errors" : {}
+  }
 
+  if (!address){
+    validationError.errors.address = 'Street address is required'
+  }
+  if(!city){
+    validationError.errors.city = 'City is required'
+  }
+  if(!state){
+    validationError.errors.state = "State is required"
+  }
+  if(!country){
+    validationError.errors.country = 'Country is required'
+  }
+  if(!lat){
+    validationError.errors.lat = 'Latitude is not valid'
+  }
+  if(!lng){
+    validationError.errors.lng = 'Longitude is not valid'
+  }
+  if(!name || name.length > 50){
+    validationError.errors.name = 'Name must be less than 50 characters'
+  }
+  if(!description){
+    validationError.errors.description = 'Description is required'
+  }
+  if(!price){
+    validationError.errors.price = 'Price per day is required'
+  }
+
+  if (validationError.errors.hasOwnProperty('address') ||validationError.errors.hasOwnProperty('city') ||validationError.errors.hasOwnProperty('state') || validationError.errors.hasOwnProperty('country')||validationError.errors.hasOwnProperty('lat') || validationError.errors.hasOwnProperty('lng') || validationError.errors.hasOwnProperty('lat') || validationError.errors.hasOwnProperty('name')|| validationError.errors.hasOwnProperty('description')||validationError.errors.hasOwnProperty('price')){
+    return res.status(400).json({validationError})
+  }
+//end error validation
 
 if (user){
     const newSpot = await Spot.create({
@@ -231,10 +269,29 @@ router.get('/:spotId/reviews', async (req, res) => {
 
 //create a review
 
-router.post('/:spotId/reviews', reviewIsValid, requireAuth, async (req, res) => {
+router.post('/:spotId/reviews', requireAuth, async (req, res) => {
   const spotId = req.params.spotId;
   const userId = req.user.id
   const {review, stars} = req.body;
+
+  //validation error
+  const validationError = {
+    "message" : "Validation error",
+    "status" : 400,
+    'errors' : {}
+  }
+
+  if(!review){
+    validationError.errors.review = 'Review text is required'
+  }
+  if(!stars || stars > 5 || stars < 1){
+    validationError.errors.stars = 'Stars must be an integer from 1 to 5'
+  }
+
+  if (validationError.errors.hasOwnProperty('review') || validationError.errors.hasOwnProperty('stars')){
+    return res.status(400).json({validationError})
+  }
+  //end validation error
 
   const spot = await Spot.findByPk(spotId)
 
@@ -472,12 +529,51 @@ router.get('/:spotId', async (req, res) => {
 
 //edit a spot
 
-router.put('/:spotId', validSpot, requireAuth, async (req, res) => {
+router.put('/:spotId', requireAuth, async (req, res) => {
   const spotId = req.params.spotId
   const userId = req.user.id
   const {address, city, state, country, lat, lng, name, description, price} = req.body
   const spot = await Spot.findByPk(spotId)
 
+  //error response validation error
+  const validationError = {
+    "message": "Validation Error",
+    "statusCode": 400,
+    "errors" : {}
+  }
+
+  if (!address){
+    validationError.errors.address = 'Street address is required'
+  }
+  if(!city){
+    validationError.errors.city = 'City is required'
+  }
+  if(!state){
+    validationError.errors.state = "State is required"
+  }
+  if(!country){
+    validationError.errors.country = 'Country is required'
+  }
+  if(!lat){
+    validationError.errors.lat = 'Latitude is not valid'
+  }
+  if(!lng){
+    validationError.errors.lng = 'Longitude is not valid'
+  }
+  if(!name || name.length > 50){
+    validationError.errors.name = 'Name must be less than 50 characters'
+  }
+  if(!description){
+    validationError.errors.description = 'Description is required'
+  }
+  if(!price){
+    validationError.errors.price = 'Price per day is required'
+  }
+
+  if (validationError.errors.hasOwnProperty('address') ||validationError.errors.hasOwnProperty('city') ||validationError.errors.hasOwnProperty('state') || validationError.errors.hasOwnProperty('country')||validationError.errors.hasOwnProperty('lat') || validationError.errors.hasOwnProperty('lng') || validationError.errors.hasOwnProperty('lat') || validationError.errors.hasOwnProperty('name')|| validationError.errors.hasOwnProperty('description')||validationError.errors.hasOwnProperty('price')){
+    return res.status(400).json({validationError})
+  }
+//end error validation
 
   if(spot){
     spot.update({
@@ -505,13 +601,20 @@ router.put('/:spotId', validSpot, requireAuth, async (req, res) => {
 router.delete('/:spotId', requireAuth, async (req, res) => {
   const spotId = req.params.spotId
   const spot = await Spot.findByPk(spotId);
+  const userId = req.user.id
 
   if (spot){
+    if (spot.ownerId === userId){
     await spot.destroy();
     return res.status(200).json({
       "message": "Successfully deleted",
       "statusCode": 200
     })
+  } else {
+    return res.status(403).json({
+      "message": "Invalid permissions for delete spot, user must own spot to delete."
+    })
+  }
   } else {
     return res.status(404).json({
       "message": "Spot couldn't be found",

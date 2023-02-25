@@ -177,7 +177,41 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
   }
 })
 
+//delete a booking
 
+router.delete('/:bookingId', requireAuth, async (req, res) => {
+  const userId = req.user.id;
+  const bookingId = req.params.bookingId;
+  const currentDate = new Date();
+
+  const booking = await Booking.findByPk(bookingId);
+
+  if(!booking){
+    return res.status(404).json({
+      "message": "Booking couldn't be found",
+      "statusCode": 404
+    })
+  }
+
+  if (currentDate >= booking.startDate){
+    return res.status(403).json({
+      "message": "Bookings that have been started can't be deleted",
+      "statusCode": 403
+    })
+  }
+
+  if (booking.userId === userId){
+    await booking.destroy();
+    return res.json({
+      "message": "Successfully deleted",
+      "statusCode": 200
+    })
+  } else {
+    return res.status(403).json({
+      "message": "Invalid permissions can not delete booking"
+    })
+  }
+})
 
 
 

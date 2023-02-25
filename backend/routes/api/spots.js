@@ -287,11 +287,6 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
       model: Spot,
     }
   })
-  // console.log(existingBookings)
-
-  if(existingBookings > 0){
-
-  }
 
   if(!spot){
     return res.status(404).json({
@@ -360,8 +355,75 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
       "message": 'owner can not create their own booking'
     })
   }
+})
+
+//Get all Bookings by spotId
+
+router.get('/:spotId/bookings', requireAuth, async (req, res) => {
+  const userId = req.user.id;
+  const spotId = req.params.spotId;
+  let allBookings = [];
+
+  const bookings = await Booking.findAll({
+    where: {spotId},
+    include: [{
+      model: User,
+      attributes: ['id', 'firstName', 'lastName']
+    }],
+    attributes: ['id', 'spotId', 'userId', 'startDate', 'endDate', 'createdAt', 'updatedAt']
+  })
+
+
+  const spot = await Spot.findByPk(spotId)
+
+  if (!spot){
+    return res.status(404).json({
+      "message": "Spot couldn't be found",
+      "statusCode": 404
+    })
+  }
+
+  //if user is owner of spot
+  if (spot.ownerId === userId){
+    for (let booking of bookings){
+      booking = [{
+        "User": {
+          'id': booking.User.id,
+          "firstName": booking.User.firstName,
+          "lastName": booking.User.lastName
+        },
+        'id': booking.id,
+        spotId,
+        "userId": booking.userId,
+        "startDate" : booking.startDate,
+        "endDate" : booking.endDate,
+        "createdAt": booking.createdAt,
+        "updatedAt": booking.updatedAt
+      }]
+      allBookings.push(booking)
+    }
+    return res.json(allBookings)
+  }
+
+  //if user is not owner of spot
+  if (spot.ownerId !== userId){
+    for (let booking of bookings){
+      booking = [{
+        "spotId": booking.spotId,
+        "startDate" : booking.startDate,
+        "endDate" : booking.endDate
+      }]
+      allBookings.push(booking)
+    }
+    return res.json(allBookings)
+  }
+
+
+  return res.json(allBookings)
 
 })
+
+
 
 //details of spot by id
 router.get('/:spotId', async (req, res) => {

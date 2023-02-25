@@ -10,8 +10,14 @@ const reviewimage = require('../../db/models/reviewimage');
 const router = express.Router();
 
 
-router.delete('/:imageId', requireAuth, async (req, res) => {
+router.delete('/:imageId', async (req, res) => {
   const userId = req.user.id;
+  if(!userId){
+    return res.status(401).json({
+    "message": "Authentication required",
+    "statusCode": 401
+  })
+}
   const imageId = req.params.imageId
   const image = await SpotImage.findByPk(imageId, {
     include:
@@ -33,7 +39,8 @@ router.delete('/:imageId', requireAuth, async (req, res) => {
     })
   }else{
     return res.status(403).json({
-      "message": "Invalid authorization to delete spot image"
+      "message": "Forbidden",
+      "statusCode": 403
     })
   }
 

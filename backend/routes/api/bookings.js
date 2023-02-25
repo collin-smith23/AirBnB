@@ -11,8 +11,15 @@ const { all } = require('./spots');
 
 //get all bookings of current user
 
-router.get('/current', requireAuth, async (req, res) => {
+router.get('/current', async (req, res) => {
   const userId = req.user.id
+
+  if(!userId){
+    return res.status(401).json({
+    "message": "Authentication required",
+    "statusCode": 401
+  })
+}
 
   const bookings = await Booking.findAll({
     where: {userId},
@@ -79,7 +86,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
 //edit a booking
 
-router.put('/:bookingId', requireAuth, async (req, res) => {
+router.put('/:bookingId', async (req, res) => {
   const userId = req.user.id;
   const bookingId = req.params.bookingId
   const {startDate, endDate} = req.body;
@@ -87,6 +94,12 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
   const jsEndDate = new Date(endDate).toDateString()
   const currentDate = new Date();
 
+  if(!userId){
+    return res.status(401).json({
+    "message": "Authentication required",
+    "statusCode": 401
+  })
+}
 
 
   const booking = await Booking.findByPk(bookingId);
@@ -171,18 +184,26 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
       })
     }
   }else{
-    return res.status(400).json({
-      "message": 'Invalid permissions to edit booking'
+    return res.status(403).json({
+      "message": 'Forbidden',
+      "statusCode": 403
     })
   }
 })
 
 //delete a booking
 
-router.delete('/:bookingId', requireAuth, async (req, res) => {
+router.delete('/:bookingId', async (req, res) => {
   const userId = req.user.id;
   const bookingId = req.params.bookingId;
   const currentDate = new Date();
+
+  if(!userId){
+    return res.status(401).json({
+    "message": "Authentication required",
+    "statusCode": 401
+  })
+}
 
   const booking = await Booking.findByPk(bookingId);
 
@@ -208,7 +229,8 @@ router.delete('/:bookingId', requireAuth, async (req, res) => {
     })
   } else {
     return res.status(403).json({
-      "message": "Invalid permissions can not delete booking"
+      "message": "Forbidden",
+      "statusCode": 403
     })
   }
 })

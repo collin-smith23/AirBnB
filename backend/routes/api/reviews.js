@@ -20,8 +20,15 @@ const validateReview = [
 ]
 
 //Get all reviews of current user
-router.get('/current', requireAuth, async (req, res) => {
+router.get('/current',  async (req, res) => {
   const userId = req.user.id;
+
+  if(!userId){
+    return res.status(401).json({
+    "message": "Authentication required",
+    "statusCode": 401
+  })
+}
 
   const reviews = await Review.findAll({
     where: {userId},
@@ -48,9 +55,15 @@ router.get('/current', requireAuth, async (req, res) => {
 
 //add an image to a review
 
-router.post('/:reviewId/images', requireAuth, async (req, res) => {
+router.post('/:reviewId/images', async (req, res) => {
   const reviewId = req.params.reviewId
   const userId = req.user.id;
+  if(!userId){
+    return res.status(401).json({
+    "message": "Authentication required",
+    "statusCode": 401
+  })
+}
   const {url} = req.body;
 
   const isReview = await Review.findByPk(reviewId)
@@ -72,6 +85,13 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
     })
   }
 
+  if(userId !== isReview.userId){
+    return res.status(403).json({
+      "message": "Forbidden",
+      "statusCode": 403
+    })
+  }
+
   if (isReview){
     const addImage = await ReviewImage.create({
       url,
@@ -86,7 +106,14 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
 
 //edit a review
 
-router.put('/:reviewId', requireAuth, async (req, res) => {
+router.put('/:reviewId', async (req, res) => {
+  const userId = req.user.id;
+  if(!userId){
+    return res.status(401).json({
+    "message": "Authentication required",
+    "statusCode": 401
+  })
+}
   const reviewId = req.params.reviewId
   const {review, stars} = req.body;
 
@@ -117,6 +144,12 @@ router.put('/:reviewId', requireAuth, async (req, res) => {
       "statusCode": 404
     })
   }else {
+    if(userId !== isReview.userId){
+      return res.status(403).json({
+        "message": "Forbidden",
+        "statusCode": 403
+      })
+    }
     isReview.update({
       review,
       stars
@@ -127,11 +160,24 @@ router.put('/:reviewId', requireAuth, async (req, res) => {
 
 //delete a review
 
-router.delete('/:reviewId', requireAuth, async (req, res) => {
+router.delete('/:reviewId', async (req, res) => {
+  const userId = req.user.id;
+  if(!userId){
+    return res.status(401).json({
+    "message": "Authentication required",
+    "statusCode": 401
+  })
+}
   const reviewId = req.params.reviewId;
   const review = await Review.findByPk(reviewId);
 
   if (review){
+    if(userId !== review.userId){
+      return res.status(403).json({
+        "message": "Forbidden",
+        "statusCode": 403
+      })
+    }
     await review.destroy();
     return res.json({
       "message": "Successfully deleted",

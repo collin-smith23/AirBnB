@@ -59,6 +59,12 @@ const router = express.Router();
 //get spots of a Current User
 router.get('/current', async (req, res) => {
   const userId = req.user.id
+  if(!userId){
+    return res.status(401).json({
+    "message": "Authentication required",
+    "statusCode": 401
+  })
+}
   const spots = await Spot.findAll({
     where: {ownerId:userId},
     include: [
@@ -231,6 +237,12 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   const {address, city, state, country, lat, lng, name, description, price} = req.body
   const userId = req.user.id
+  if(!userId){
+    return res.status(401).json({
+    "message": "Authentication required",
+    "statusCode": 401
+  })
+}
   const user = Spot.findByPk(userId)
   //error response validation error
   const validationError = {
@@ -295,6 +307,13 @@ if (user){
 
 //create an image for a spot
 router.post('/:spotId/images', async (req, res) => {
+  const userId = req.user.id;
+  if(!userId){
+    return res.status(401).json({
+    "message": "Authentication required",
+    "statusCode": 401
+  })
+}
   const spotId = req.params.spotId
   const spot = await Spot.findByPk(spotId)
   const {url, preview} = req.body
@@ -308,7 +327,12 @@ router.post('/:spotId/images', async (req, res) => {
   }
 
   if (spot){
-    // console.log('this is my spot', spot)
+    if(userId !== spot.ownerId){
+      return res.status(403).json({
+        "message": "Forbidden",
+        "statusCode": 403
+      })
+    }
     const newSpotImg = await SpotImage.create({
       include: [
         {
@@ -368,9 +392,15 @@ router.get('/:spotId/reviews', async (req, res) => {
 
 //create a review
 
-router.post('/:spotId/reviews', requireAuth, async (req, res) => {
+router.post('/:spotId/reviews', async (req, res) => {
   const spotId = req.params.spotId;
   const userId = req.user.id
+  if(!userId){
+    return res.status(401).json({
+    "message": "Authentication required",
+    "statusCode": 401
+  })
+}
   const {review, stars} = req.body;
 
   //validation error
@@ -428,9 +458,15 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
 
 //create a booking
 
-router.post('/:spotId/bookings', requireAuth, async (req, res) => {
+router.post('/:spotId/bookings', async (req, res) => {
   const spotId = req.params.spotId;
   const userId = req.user.id;
+  if(!userId){
+    return res.status(401).json({
+    "message": "Authentication required",
+    "statusCode": 401
+  })
+}
   const {startDate, endDate} = req.body;
   const jsStartDate = new Date(startDate).toDateString()
   const jsEndDate = new Date(endDate).toDateString()
@@ -515,8 +551,14 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
 
 //Get all Bookings by spotId
 
-router.get('/:spotId/bookings', requireAuth, async (req, res) => {
+router.get('/:spotId/bookings',  async (req, res) => {
   const userId = req.user.id;
+  if(!userId){
+    return res.status(401).json({
+    "message": "Authentication required",
+    "statusCode": 401
+  })
+}
   const spotId = req.params.spotId;
   let allBookings = [];
 
@@ -628,9 +670,15 @@ router.get('/:spotId', async (req, res) => {
 
 //edit a spot
 
-router.put('/:spotId', requireAuth, async (req, res) => {
+router.put('/:spotId', async (req, res) => {
   const spotId = req.params.spotId
   const userId = req.user.id
+  if(!userId){
+    return res.status(401).json({
+    "message": "Authentication required",
+    "statusCode": 401
+  })
+}
   const {address, city, state, country, lat, lng, name, description, price} = req.body
   const spot = await Spot.findByPk(spotId)
 
@@ -675,6 +723,12 @@ router.put('/:spotId', requireAuth, async (req, res) => {
 //end error validation
 
   if(spot){
+    if(spot.ownerId !== userId){
+      return res.status(403).json({
+        "message": "Forbidden",
+        "statusCode": 403
+      })
+    }
     spot.update({
       address,
       city,
@@ -701,6 +755,12 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
   const spotId = req.params.spotId
   const spot = await Spot.findByPk(spotId);
   const userId = req.user.id
+  if(!userId){
+    return res.status(401).json({
+    "message": "Authentication required",
+    "statusCode": 401
+  })
+}
 
   if (spot){
     if (spot.ownerId === userId){
@@ -711,7 +771,8 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
     })
   } else {
     return res.status(403).json({
-      "message": "Invalid permissions for delete spot, user must own spot to delete."
+      "message": "Forbidden",
+      "statusCode": 403
     })
   }
   } else {

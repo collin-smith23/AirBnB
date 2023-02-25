@@ -664,7 +664,37 @@ router.get('/:spotId', async (req, res) => {
       "statusCode": 404
     })
   }
-  return res.json(spot)
+
+  const owner = await User.findByPk(spot.ownerId)
+  const images = await SpotImage.findAll({
+    where: {spotId: spot.id},
+    attributes: ['id', 'url', 'preview']
+  })
+
+  const result = {
+    "id": spot.id,
+    "ownerId": spot.ownerId,
+    "address": spot.address,
+    "city": spot.city,
+    "state": spot.state,
+    "country": spot.country,
+    "lat": spot.lat,
+    "lng": spot.lng,
+    "name": spot.name,
+    "description": spot.description,
+    "price": spot.price,
+    "createdAt": spot.createdAt,
+    "updatedAt": spot.updatedAt ,
+    "numReviews": spot.numReviews,
+    "avgStarRating": spot.avgRating,
+    "SpotImages": images,
+    "Owner": {
+      "id": owner.id,
+      "firstName": owner.firstName,
+      "lastName": owner.lastName
+    }
+  }
+  return res.json(result)
 })
 
 

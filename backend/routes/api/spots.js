@@ -609,24 +609,24 @@ router.get('/:spotId/bookings',  async (req, res) => {
       }]
       allBookings.push(booking)
     }
-    return res.json(allBookings)
+    return res.json({allBookings})
   }
 
   //if user is not owner of spot
   if (spot.ownerId !== userId){
     for (let booking of bookings){
-      booking = [{
+      booking = {
         "spotId": booking.spotId,
         "startDate" : booking.startDate,
         "endDate" : booking.endDate
-      }]
+      }
       allBookings.push(booking)
     }
-    return res.json(allBookings)
+    return res.json({allBookings})
   }
 
 
-  return res.json(allBookings)
+  // return res.json(allBookings)
 
 })
 

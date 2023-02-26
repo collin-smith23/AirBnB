@@ -470,15 +470,15 @@ router.post('/:spotId/bookings', async (req, res) => {
   const {startDate, endDate} = req.body;
   const jsStartDate = new Date(startDate).toDateString()
   const jsEndDate = new Date(endDate).toDateString()
-  const currentDate = new Date().toDateString()
+  // const currentDate = new Date().toDateString()
   // const currentMonth = currentDate.month += 1
 
-  if (currentDate > jsStartDate){
-    return res.status(403).json({
-      "message": "Can't create a booking for a past date",
-      "statusCode": 403
-    })
-  }
+  // if (currentDate > jsStartDate){
+  //   return res.status(403).json({
+  //     "message": "Can't create a booking for a past date",
+  //     "statusCode": 403
+  //   })
+  // }
 
   const spot = await Spot.findByPk(spotId);
 

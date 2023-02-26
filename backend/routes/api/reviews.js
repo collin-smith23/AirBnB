@@ -61,6 +61,10 @@ router.get('/current',  async (req, res) => {
       previewImage = {}
       previewImage.url = null
     }
+    let ReviewImages = await ReviewImage.findAll({
+      where : {reviewId : review.id},
+      attributes: ['id', 'url']
+    })
 
       review = {
         "id": review.id,
@@ -84,7 +88,7 @@ router.get('/current',  async (req, res) => {
           "price": review.Spot.price,
           "previewImage": previewImage.url
         },
-        "ReviewImages": review.ReviewImage
+        ReviewImages
       }
       Reviews.push(review)
   }

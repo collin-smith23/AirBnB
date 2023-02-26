@@ -1,11 +1,12 @@
 const express = require('express');
 const { setTokenCookie, requireAuth} = require('../../utils/auth');
-const { User, Spot, Review, ReviewImage } = require('../../db/models');
+const { User, Spot, Review, ReviewImage, SpotImage } = require('../../db/models');
 const { Sequelize } = require('sequelize');
 
 const router = express.Router();
 const { check } = require('express-validator');
 const {handleValidationErrors} = require('../../utils/validation');
+const spotimage = require('../../db/models/spotimage');
 
 const validateReview = [
   check('review')
@@ -47,8 +48,50 @@ router.get('/current',  async (req, res) => {
       }
     ]
   })
+  // let previewImage;
+  let Reviews = [];
+  for (let review of reviews){
+    let previewImage = await SpotImage.findOne({
+      where: {
+        spotId: review.Spot.id,
+      },
+      attributes: ['url']
+    })
+    if (!previewImage){
+      previewImage = {}
+      previewImage.url = null
+    }
+
+      review = {
+        "id": review.id,
+        "userId": review.userId,
+        "spotId": review.spotId,
+        "review": review.review,
+        "stars": review.stars,
+        "createdAt": review.createdAt,
+        "updatedAt": review.updatedAt ,
+        "User": review.User,
+        "Spot": {
+          "id": review.Spot.id,
+          "ownerId": review.Spot.ownerId,
+          "address": review.Spot.address,
+          "city": review.Spot.city,
+          "state": review.Spot.state,
+          "country": review.Spot.country,
+          "lat": review.Spot.lat,
+          "lng": review.Spot.lng,
+          "name": review.Spot.name,
+          "price": review.Spot.price,
+          "previewImage": previewImage.url
+        },
+        "ReviewImages": review.ReviewImage
+      }
+      Reviews.push(review)
+  }
+
+
   return res.json({
-    reviews
+    Reviews
   })
 });
 

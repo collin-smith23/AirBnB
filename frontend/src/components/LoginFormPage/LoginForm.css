@@ -1,0 +1,32 @@
+.login-form{
+    position: relative;
+    width: 500px;
+    background-color: whitesmoke;
+    border: 2px solid whitesmoke;
+    border-radius: 5%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: auto;
+    align-items: center;
+    gap: 15px
+};
+
+.credentials {
+    text-align: center;
+}
+
+.input-box {
+    padding-left: 10px;
+    margin-left: 10px;
+    width: 250px
+}
+
+.login-button{
+    margin-bottom: 50px;
+    width: 250px;
+    height: 35px;
+    border: 1px solid black;
+    border-radius: 5%;
+}

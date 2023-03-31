@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
+import { ModalProvider, Modal} from './context/Modal'
 import { Provider as ReduxProvider } from 'react-redux';
 import './index.css';
 import App from './App';
@@ -20,11 +21,14 @@ if (process.env.NODE_ENV !== "production") {
 
 function Root() {
   return (
+    <ModalProvider>
     <ReduxProvider store={store}>
       <BrowserRouter>
         <App />
+        <Modal />
       </BrowserRouter>
     </ReduxProvider>
+    </ModalProvider>
   );
 }
 

@@ -10,9 +10,11 @@ const setUser = (user) => {
   };
 };
 
-const removeUser = () => ({
+const removeUser = () => {
+  return {
     type: REMOVE_USER,
-});
+  }
+};
 
 export const signup = (user) => async (dispatch) => {
   const { username, firstName, lastName, email, password } = user;

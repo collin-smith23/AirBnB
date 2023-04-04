@@ -1,3 +1,41 @@
 .profile-dropdown.hidden {
     display: none;
 }
+
+.profile-dropdown {
+    list-style-type: none;
+    border: 1px solid black;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: flex-start;
+}
+
+.home-button-container{
+    list-style-type: none;
+}
+
+.nav-bar-items{
+    list-style-type: none;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.logo-image{
+    position: absolute;
+    left: 10px;
+    top: 0px;
+    width: 175px;
+}
+
+.session-links{
+    list-style-type: none;
+    position: absolute;
+    width: 75px;
+    right: 10px;
+    top: -10px;
+    color: red;
+}
+

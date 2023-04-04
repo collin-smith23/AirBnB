@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
+import OpenModalMenuItem from './OpenModalMenuItem';
+import LoginFormModal from '../LoginFormModal';
+import SignupFormModal from '../SignupFormModal';
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -26,6 +29,8 @@ function ProfileButton({ user }) {
     return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
 
+  const closeMenu = () => setShowMenu(false);
+
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
@@ -39,12 +44,31 @@ function ProfileButton({ user }) {
         <i className="fas fa-user-circle" />
       </button>
       <ul className={ulClassName} ref={ulRef}>
+        {user ? (
+          <>
         <li>{user.username}</li>
         <li>{user.firstName} {user.lastName}</li>
         <li>{user.email}</li>
         <li>
           <button onClick={logout}>Log Out</button>
         </li>
+          </>
+        ) : (
+          <>
+          <OpenModalMenuItem
+          className='session-links'
+          itemText='Log In'
+          onItemClick={closeMenu}
+          modalComponent={<LoginFormModal />}
+          />
+          <OpenModalMenuItem
+          className='session-links'
+          itemText='Sign Up'
+          onItemClick={closeMenu}
+          modalComponent={<SignupFormModal />}
+          />
+          </>
+        )}
       </ul>
     </>
   );

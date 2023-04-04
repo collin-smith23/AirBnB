@@ -17,6 +17,9 @@ function LoginFormModal() {
   //   <Redirect to="/" />
   // );
 
+const validUser = credential.length >= 4;
+const validPassword = password.length >= 6;
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors([]);
@@ -24,7 +27,11 @@ function LoginFormModal() {
     .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
-        if (data && data.errors) setErrors(data.errors);
+        if (data && data.errors) {setErrors(data.errors)}
+        else {
+          setErrors(["The provided credentials are invalid"]);
+        console.log(data)
+        }
       });
   }
 
@@ -55,7 +62,7 @@ function LoginFormModal() {
           required
           />
       </label>
-      <button className='login-button' type="submit">Log In</button>
+      <button className='login-button' type="submit" disabled={!validPassword || !validUser}>Log In</button>
     </form>
           </>
   );

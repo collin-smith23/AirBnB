@@ -4,12 +4,12 @@
 
 .profile-dropdown {
     list-style-type: none;
-    border: 1px solid black;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     align-content: flex-start;
+    cursor: pointer;
 }
 
 .home-button-container{
@@ -30,12 +30,18 @@
     width: 175px;
 }
 
-.session-links{
+/* .session-links{
     list-style-type: none;
     position: absolute;
     width: 75px;
     right: 10px;
     top: -10px;
-    color: red;
+} */
+
+.profile-dropdown li:not(.logged-in):hover{
+    font-weight: bold;
 }
 
+.logged-in{
+    cursor: default;
+}

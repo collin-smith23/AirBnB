@@ -13,6 +13,11 @@
     gap: 15px
 };
 
+.login-form-box{
+    border: 2px solid whitesmoke;
+    border-radius: 5%;
+}
+
 .credentials {
     text-align: center;
 }
@@ -20,13 +25,30 @@
 .input-box {
     padding-left: 10px;
     margin-left: 10px;
-    width: 250px
+    width: 250px;
+    background-color: rgb(201, 245, 245);
 }
 
 .login-button{
     margin-bottom: 50px;
     width: 250px;
     height: 35px;
-    border: 1px solid black;
     border-radius: 5%;
+    background-color: rgb(255, 91, 91);
+}
+
+.login-button:disabled{
+    background-color: rgb(238, 238, 238);
+}
+
+.demo-login-button{
+    width: 250px;
+    height: 35px;
+    text-decoration: underline;
+    border-radius: 5%;
+    color: teal;
+}
+
+h1 {
+    text-align: center;
 }

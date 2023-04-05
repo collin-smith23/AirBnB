@@ -29,19 +29,28 @@ const validPassword = password.length >= 6;
         const data = await res.json();
         if (data && data.errors) {setErrors(data.errors)}
         else {
-          setErrors(["The provided credentials are invalid"]);
+          setErrors(["The provided credentials were invalid"]);
         console.log(data)
         }
       });
   }
 
+  const handleDemoLogin = (e) => {
+    e.preventDefault();
+    setErrors([]);
+    return dispatch(sessionActions.login({
+      credential: "Demo-lition",
+      password: "password"
+    })).then(closeModal);
+  };
+
   return (
-    <>
-    <h1>Log In</h1>
+    <div className='login-form-box'>
     <form className='login-form' onSubmit={handleSubmit}>
       <ul className='errors'>
         {errors.map((error, idx) => <li key={idx}>{error}</li>)}
       </ul>
+      <h1>Log In</h1>
       <label className='credentials'>
         {/* Username or Email */}
         <input className='input-box'
@@ -63,8 +72,9 @@ const validPassword = password.length >= 6;
           />
       </label>
       <button className='login-button' type="submit" disabled={!validPassword || !validUser}>Log In</button>
+      <div className='demo-login-button' type="submit" onClick={handleDemoLogin}>Demo User</div>
     </form>
-          </>
+          </div>
   );
 }
 

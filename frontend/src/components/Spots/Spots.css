@@ -1,0 +1,19 @@
+.spots-slot{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    position: relative;
+    top: 300px;
+    border: 1px solid black;
+    align-content: space-evenly;
+}
+
+.spot-slot{
+    border: 1px solid green;
+    margin: 15px;
+}
+
+.spot-image{
+    border: 1px solid red;
+    margin: 15px;
+}

@@ -11,9 +11,14 @@
 .spot-slot{
     border: 1px solid green;
     margin: 15px;
+    max-width: 25%;
+    min-width: 300px;
 }
 
 .spot-image{
     border: 1px solid red;
-    margin: 15px;
+    object-fit: cover;
+    max-width: 100%;
+    height: auto;
+    background-image:url('https://vignette.wikia.nocookie.net/luigi-mansionfanon/images/3/33/No_Preview.png/revision/latest/scale-to-width-down/480?cb=20101212051457') ;
 }

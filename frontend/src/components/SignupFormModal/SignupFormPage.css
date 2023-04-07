@@ -26,10 +26,12 @@
     height: 35px;
     border-radius: 5%;
     background-color: rgb(255, 91, 91);
+    cursor: pointer;
 }
 
 .signup-button:disabled{
     background-color: rgb(238, 238, 238);
+    cursor: not-allowed;
 }
 
 h1{

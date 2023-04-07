@@ -24,13 +24,13 @@ function SignupFormModal() {
     const validPassword = password.length >= 6;
     const validConfirmPassword = password === confirmPassword;
     const validEmail = email.length >= 1
-    const emailisemail = function(mail){
-      let chars = mail.split('')
-      if (!chars.includes('@')){
-        return false
-      }
-      else return true
-    }
+    // const emailisemail = function(mail){
+    //   let chars = mail.split('')
+    //   if (!chars.includes('@')){
+    //     return false
+    //   }
+    //   else return true
+    // }
     const validFirstName = firstName.length >= 1;
     const validLastName = lastName.length >= 1;
   
@@ -38,27 +38,27 @@ function SignupFormModal() {
       e.preventDefault();
       if (password === confirmPassword) {
         setErrors([]);
-        const currErrs=[];
+        // const currErrs=[];
         return dispatch(sessionActions.signup({ email, username, firstName, lastName, password }))
         .then(closeModal)
           .catch(async (res) => {
             const data = await res.json();
             if (data && data.errors) setErrors(data.errors);
-            if(data.duplicateCredsError){
-              console.log(data)
-              currErrs.push(data.duplicateCredsError.message)
-            }
-            if(data.invalidCredsError){
-              console.log('this is invalid creds', data)
-              currErrs.push(data.invalidCredsError.message)
-            }
-            if(!emailisemail(email)){
-              currErrs.push(["Invalid email"])
-            }
-            if(currErrs){
-                setErrors([currErrs])
-                console.log(errors)
-            }
+            // if(data.duplicateCredsError){
+            //   console.log(data)
+            //   currErrs.push(data.duplicateCredsError.message)
+            // }
+            // if(data.invalidCredsError){
+            //   console.log('this is invalid creds', data)
+            //   currErrs.push(data.invalidCredsError.message)
+            // }
+            // if(!emailisemail(email)){
+            //   currErrs.push(["Invalid email"])
+            // }
+            // if(currErrs){
+            //     setErrors([currErrs])
+            //     console.log(errors)
+            // }
           });
       }
       return setErrors(['Confirm Password field must be the same as the Password field']);

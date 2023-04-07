@@ -35,10 +35,12 @@
     height: 35px;
     border-radius: 5%;
     background-color: rgb(255, 91, 91);
+    cursor: pointer;
 }
 
 .login-button:disabled{
     background-color: rgb(238, 238, 238);
+    cursor: not-allowed
 }
 
 .demo-login-button{
@@ -47,6 +49,7 @@
     text-decoration: underline;
     border-radius: 5%;
     color: teal;
+    cursor: pointer;
 }
 
 h1 {

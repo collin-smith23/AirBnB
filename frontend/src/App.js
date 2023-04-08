@@ -5,6 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 // import SingupFormPage from './components/SignupFormPage';
 import * as sessionActions from './store/session';
 import Navigation from './components/Navigation';
+import SpotDetails from './components/SpotDetail'
 import Spots from './components/Spots';
 
 
@@ -23,6 +24,9 @@ function App() {
       <Switch>
         <Route exact path='/'>
           <Spots />
+        </Route>
+        <Route path='/spots/:spotId' spot={SpotDetails}>
+          <SpotDetails />
         </Route>
     </Switch>
       )}

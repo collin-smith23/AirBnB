@@ -11,6 +11,12 @@ function Spots() {
         return spot.previewImage
     }
 
+    const averageRating = (spot) => {
+        if (spot.avgRating === null){
+            spot.avgRating = 'New'
+        }
+        return spot.avgRating
+    }
 
     useEffect(() => {
         fetch('/api/spots')
@@ -21,16 +27,19 @@ function Spots() {
             })
     }, [])
 
-    // console.log(spots)
+    console.log(spots)
     return (
         <div className="spots-slot">
     {spots.map(spot => (
-        <div className="spot-slot" onClick={() => window.location.href = `/spots/${spot.id}`}>
+        <div className="spot-slot" title={spot.name} onClick={() => window.location.href = `/spots/${spot.id}`}>
             <img className='spot-image' src={imgSource(spot)}/>
             <div>{spot.city}, {spot.state}
-                <div title={spot.name}>
-                    {spot.reviews}
+                <div className="avg-rating" title={spot.name}>
+                    {`${averageRating(spot)}`}
                 </div>
+                <div className="spot-price">
+                    {`$${spot.price} night`}
+                    </div>
             </div>
         </div>
     ))}

@@ -20,11 +20,12 @@ function Spots() {
                 setSpots(spotsArray)
             })
     }, [])
+
     // console.log(spots)
     return (
         <div className="spots-slot">
     {spots.map(spot => (
-        <div className="spot-slot">
+        <div className="spot-slot" onClick={() => window.location.href = `/spots/${spot.id}`}>
             <img className='spot-image' src={imgSource(spot)}/>
             <div>{spot.city}, {spot.state}
                 <div title={spot.name}>

@@ -9,7 +9,7 @@ function SpotDetails() {
     const {spotId} = useParams()
     const dispatch = useDispatch();
     const [currSpot, setcurrSpot] = useState('');
-    // const [reviews, setreviews] = useState('')
+    const [reviews, setreviews] = useState([])
 
     const user = useSelector(state => state.session.user);
     const spot = currSpot;
@@ -22,11 +22,40 @@ function SpotDetails() {
             .catch(err => console.log(err));
     }, [spotId]);
 
-    // useEffect(() => {
-    //     dispatch(spotActions.getReviewsThunk(spotId))
-    //         .then(reviews => setreviews(reviews))
-    //         .catch(err => console.log(err));
-    // }, [spotId]);
+    useEffect(() => {
+        dispatch(spotActions.getReviewsThunk(spotId))
+            .then(reviews => setreviews(reviews))
+            .catch(err => console.log(err));
+    }, [spotId]);
+    console.log(reviews[0])
+
+    const avgRating = (reviews) => {
+        let sum = 0;
+        reviews.forEach(review => {
+            sum += review.stars
+        })
+        return sum / reviews.length
+    };
+
+    const numberReviews = (reviews) => {
+        if (reviews.length > 1) {
+            return `${reviews.length} reviews`
+        } if (reviews.length === 1) { 
+            return `${reviews.length} review`
+        } else return 'No Reviews Yet'
+    }
+
+    const dateFormat = (dateString) => {
+        const date = new Date(dateString);
+        const month = date.toLocaleDateString('default', { month: 'short' });
+        const day = date.getDate();
+        const year = date.getFullYear();
+
+        const formattedDate = `${month}, ${day}`
+        return formattedDate
+    }
+
+
 
     return (
         <div>
@@ -44,11 +73,32 @@ function SpotDetails() {
                     <p className="spot-description"> {currSpot.description} </p>
                     <span className="reserve-button-container">
                         <div className="price-div">{`$${currSpot.price} night`}</div> 
-                        <div className="reviews-preview-div">★ need to add reviews</div> 
+                        <div className="reviews-preview-div">
+                            <div className="avg-stars-div"> 
+                             {`★${avgRating(reviews)}`}
+                            </div>
+                            <div className="num-reviews-div">
+                              {`${numberReviews(reviews)}`}
+                            </div>
+                        </div> 
                         <button className="reserve-button"
                             onClick={() => window.alert("Feature Coming Soon...")}
-                        >Reserve</button>
+                            >Reserve</button>
                             </span>
+                    <span className="reviews-span">
+                            <ul className="review-details-container">
+                                {reviews.map(review => (
+                                    <li className="review-details-li" key={review.id}>
+                                        <h4 className="name-of-reviewer">{review.User.firstName}</h4>
+                                        <div className="date-of-review">{dateFormat(review.createdAt)}</div>
+                                        <p className="description">
+                                        {review.review}
+                                        </p>
+                                    </li>
+                                ))}
+                            </ul>
+                    </span>
+
                 </div>
             ) : (
                 <p>Loading...</p>

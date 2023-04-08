@@ -27,7 +27,7 @@ function Spots() {
             })
     }, [])
 
-    console.log(spots)
+    // console.log(spots)
     return (
         <div className="spots-slot">
     {spots.map(spot => (

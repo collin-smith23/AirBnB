@@ -78,7 +78,7 @@ function SignupFormModal() {
       <div className='signup-form-box'>
       <form className='signup-form' onSubmit={handleSubmit}>
         {errors.length > 0 && (
-        <ul>
+        <ul className='error-text'>
           {errors.map((error, idx) => <li key={idx}>{error}</li>)}
         </ul>
         )}

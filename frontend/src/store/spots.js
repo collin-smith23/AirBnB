@@ -3,6 +3,7 @@ const GET_CURRENT_SPOT = 'spots/getCurrentSpot';
 const GET_SPOTS = 'spots/getAllSpots';
 const CREATE_SPOT = 'spots/create';
 const GET_REVIEWS = 'spots/getReviews';
+const CREATE_IMAGE = 'spots/createImage';
 
 const getCurrentSpot = (spot) => ({
     type: GET_CURRENT_SPOT,
@@ -17,6 +18,11 @@ const getAllSpots = (spots) => ({
 const createSpot = (spot) => ({
     type: CREATE_SPOT,
     payload: spot,
+});
+
+const createImage = (image) => ({
+    type: CREATE_IMAGE,
+    payload: image,
 });
 
 const getReviews = (reviews) => ({ 
@@ -50,18 +56,32 @@ export const getCurrentSpotThunk = (spotId) => async (dispatch) => {
 
 
 export const createSpotThunk = (
-    country, address, city, state, lat, lng, description, title, price, PreviewImage
+    country, address, city, state, lat, lng, description, name, price,
 ) => async dispatch => {
     const res = await fetch('/api/spots', {
         method: 'POST',
         body: JSON.stringify(
             {
-                country, address, city, state, lat, lng, description, title, price, PreviewImage
+                country, address, city, state, lat, lng, description, name, price, 
             }
         )
     });
     const data = await res.json();
     dispatch(createSpot(data));
+    return res
+}
+
+export const createSpotImage = (spotId, url, preview) => async dispatch => {
+    const res = await fetch(`/api/spot/${spotId}/images`, {
+        method: 'POST',
+        body: JSON.stringify(
+            {
+                url, preview
+            }
+        )
+    });
+    const data = await res.json();
+    dispatch(createImage(data));
     return res
 }
 
@@ -84,6 +104,11 @@ const spotReducer = (state = initialState, action) => {
             return {
                 ...newState,
                 spots: [...state.spots, action.payload]
+            }
+        case CREATE_IMAGE:
+            return {
+                ...newState,
+                image: action.payload
             }
         case GET_REVIEWS:
             return {

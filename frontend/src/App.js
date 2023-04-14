@@ -7,7 +7,6 @@ import * as sessionActions from './store/session';
 import Navigation from './components/Navigation';
 import SpotDetails from './components/SpotDetail'
 import Spots from './components/Spots';
-import CreateSpot from './components/CreateSpot';
 
 
 function App() {
@@ -26,9 +25,6 @@ function App() {
         <Route exact path='/'>
           <Spots />
         </Route>
-        <Route exact path='/spots/new'>
-          <CreateSpot />
-          </Route>
         <Route path='/spots/:spotId' spot={SpotDetails}>
           <SpotDetails />
         </Route>

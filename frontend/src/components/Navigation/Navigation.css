@@ -10,13 +10,6 @@
     align-items: center;
     align-content: flex-start;
     cursor: pointer;
-    position: relative;
-}
-
-
-.fas .fa-user-circle {
-    position: relative;
-    display: inline-block;
 }
 
 .home-button-container{
@@ -28,8 +21,6 @@
     position: absolute;
     right: 10px;
     top: 10px;
-    cursor: pointer;
-    z-index: 2;
 }
 
 .logo-image{
@@ -53,12 +44,4 @@
 
 .logged-in{
     cursor: default;
-}
-
-.create-spot-button-box {
-    position: absolute;
-    right: 60px;
-    top: 26.5px;
-    cursor: pointer;
-    z-index: 1;
 }

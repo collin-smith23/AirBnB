@@ -1,42 +1,60 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useHistory } from 'react-router-dom'
+import { Redirect } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
 import './createSpot.css';
 
 function CreateSpot(){
     const dispatch = useDispatch();
-    const history = useHistory();
-
     const sessionUser = useSelector((state) => state.session.user)
-    
-    const { spotId } = useParams();
 
-    
-    const [country, setCountry] = useState('');
-    const [address, setAddress] = useState('');
-    const [city, setCity] = useState('');
-    const [state, setState] = useState('');
-    const [lat, setLat] = useState('');
-    const [lng, setLng] = useState('');
-    const [description, setDescription] = useState('');
-    const [name, setName] = useState('');
-    const [price, setPrice] = useState('');
-    const [previewImage, setpreviewImage] = useState('');
-    const [preview, setPreview] = useState(false);
+    const [formData, setFormData] = useState({
+        country: '',
+        address: '',
+        city: '',
+        state: '',
+        lat: '',
+        lng: '',
+        description: '',
+        name: '',
+        price: '',
+        url: '',
+        preview: false,
+    })
 
     const [errors, setErrors] = useState([]);
+
+    const handleInputChange = (e) => {
+        const {name, value} = e.target;
+        setFormData({...formData, [name]: value});
+    }
 
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const { country, address, city, state, lat, lng, description, name, price, url, preview } = formData;
 
-        dispatch(spotActions.createSpotThunk({country, address, city, state, lat, lng, description, name, price, previewImage}))
-        // dispatch(spotActions.createSpotImage({spotId, previewImage, preview}))
+        dispatch(spotActions.createSpotThunk({country, address, city, state, lat, lng, description, name, price})) && 
+        dispatch(spotActions.createSpotImage({url, preview}))
+        .then((newSpot) => {
+            //clear form data
+            setFormData({
+                country: '',
+                address: '',
+                city: '',
+                state: '',
+                lat: '',
+                lng: '',
+                description: '',
+                name: '',
+                price: '',
+                url: '',
+                preview: false,
+            })
+        })
         .catch(async (res) => {
             const data = await res.json();
-            console.log(data);
-            if (data.errors) setErrors(data.errors);
+            if (data && data.errors) setErrors(data.errors);
         });
     }
 
@@ -49,51 +67,38 @@ function CreateSpot(){
                     </ul>
                 )}
                 <h1 className='create-spot-title'>Create a new Spot</h1>
-                <h3 className='asking-for-new-spot'>Where's your place located?</h3>
+                <h2 className='asking-for-new-spot'>Where's your place located?</h2>
                 <p>Guests will only get your exact address once they booked a reservation</p>
                     <div className = 'address-input'>
                     <label>
                         Country
-                        <input type='text' className='create-spot-input' placeholder='Country' value={country} onChange={(e) => setCountry(e.target.value)} />
+                        <input className='create-spot-input' placeholder='Country' value={formData.country} onChange={handleInputChange} />
                     </label>
                     <label>
                         Street Address
-                        <input className='create-spot-input' placeholder='Address' value={address} onChange={(e) => setAddress(e.target.value)} />
+                        <input className='create-spot-input' placeholder='Address' value={formData.address} onChange={handleInputChange} />
                     </label>
                     <label>
                         City
-                        <input className='create-spot-input' placeholder='City' value={city} onChange={(e) => setCity(e.target.value)} />
+                        <input className='create-spot-input' placeholder='City' value={formData.city} onChange={handleInputChange} />
                     </label>
                     <label>
                         State
-                        <input className='create-spot-input' placeholder='State' value={state} onChange={(e) => setState(e.target.value)} />
+                        <input className='create-spot-input' placeholder='State' value={formData.state} onChange={handleInputChange} />
                     </label>
                     <label>
                         Latitude
-                        <input className='create-spot-input' placeholder='Latitude' value={lat} onChange={(e) => setLat(e.target.value)} />
+                        <input className='create-spot-input' placeholder='Latitude' value={formData.lat} onChange={handleInputChange} />
                     </label>
                     <label>
                         Longitude
-                        <input className='create-spot-input' placeholder='Longitude' value={lng} onChange={(e) => setLng(e.target.value)} />
+                        <input className='create-spot-input' placeholder='Longitude' value={formData.lng} onChange={handleInputChange} />
                     </label>
                     </div>
-                <h3 className='describe-your-place-h2'> Describe your place to guests</h3>
+                <h2 className='describe-your-place-h2'> Describe your place to guests</h2>
                 <p>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
-                    <input className='new-spot-description' min={30} placeholder='Please write at least 30 characters' value={description} onChange={(e) => setDescription(e.target.value)} />
-                <h3 className='name-your-spot'>Create a title for your spot</h3>
-                <p>Catch guests' attention with a spot title that highlights what makes your place special</p>
-                    <input className='-create-spot-input' placeholder='Name of your spot' value={name} onChange={(e) => setName(e.target.value)}></input>
-                <h3 className='set-price-for-spot'>Set a base price for your spot</h3>
-                <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
-                    <input className='-create-spot-input' placeholder='Price per night (USD)' value={price} onChange={(e) => setPrice(e.target.value)}></input>
-                <h3 className='upload-photo-section'>Liven up your spot with photos</h3>
-                <p>Submit a link to at least one photo to publish your spot.</p>
-                    <input className='preview-image-input' type='text' placeholder='Preview Image Url' onChange={(e) => setpreviewImage(e.target.value) && setPreview(true)}></input>
-                    <input className='spot-image-input' type='text' placeholder='Image Url' onChange={(e) => setpreviewImage(e.target.value)}></input>
-                    <input className='spot-image-input' type='text' placeholder='Image Url' onChange={(e) => setpreviewImage(e.target.value)}></input>
-                    <input className='spot-image-input' type='text' placeholder='Image Url' onChange={(e) => setpreviewImage(e.target.value)}></input>
-                    <input className='spot-image-input' type='text' placeholder='Image Url' onChange={(e) => setpreviewImage(e.target.value)}></input>
-                    <button className='submit-spot-btm' type='submit' onClick={handleSubmit}>Submit</button>
+                    <input className='new-spot-description' min={30} placeholder='Please write at least 30 characters' value={formData.description} onChange={handleInputChange} />
+
 
             </form>
         </div>

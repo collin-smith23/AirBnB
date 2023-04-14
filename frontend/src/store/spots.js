@@ -1,4 +1,4 @@
-import { csrfFetch } from "./csrf";
+
 const GET_CURRENT_SPOT = 'spots/getCurrentSpot';
 const GET_SPOTS = 'spots/getAllSpots';
 const CREATE_SPOT = 'spots/create';
@@ -31,7 +31,7 @@ const getReviews = (reviews) => ({
 })
 
 export const getSpotsThunk = () => async (dispatch) => {
-    const res = await csrfFetch('/api/spots');
+    const res = await fetch('/api/spots');
 
     if (res.ok) {
         const list = await res.json();
@@ -41,14 +41,14 @@ export const getSpotsThunk = () => async (dispatch) => {
 };
 
 export const getReviewsThunk = (spotId) => async dispatch => {
-    const res = await csrfFetch(`/api/spots/${spotId}/reviews`);
+    const res = await fetch(`/api/spots/${spotId}/reviews`);
     const data = await res.json();
     dispatch(getReviews(data));
     return data;
 }
 
 export const getCurrentSpotThunk = (spotId) => async (dispatch) => {
-    const res = await csrfFetch(`/api/spots/${spotId}`);
+    const res = await fetch(`/api/spots/${spotId}`);
     const data = await res.json();
     dispatch(getCurrentSpot(data));
     return data;
@@ -56,13 +56,14 @@ export const getCurrentSpotThunk = (spotId) => async (dispatch) => {
 
 
 export const createSpotThunk = (
-    country, address, city, state, lat, lng, description, name, price, previewImage
+    country, address, city, state, lat, lng, description, name, price,
 ) => async dispatch => {
-    const res = await csrfFetch('/api/spots', {
+    const res = await fetch('/api/spots', {
         method: 'POST',
         body: JSON.stringify(
-        
-                country, address, city, state, lat, lng, description, name, price, previewImage
+            {
+                country, address, city, state, lat, lng, description, name, price, 
+            }
         )
     });
     const data = await res.json();
@@ -70,19 +71,19 @@ export const createSpotThunk = (
     return res
 }
 
-// export const createSpotImage = (spotId, url, preview) => async dispatch => {
-//     const res = await csrfFetch(`/api/spot/${spotId}/images`, {
-//         method: 'POST',
-//         body: JSON.stringify(
-//             {
-//                 url, preview
-//             }
-//         )
-//     });
-//     const data = await res.json();
-//     dispatch(createImage(data));
-//     return res
-// }
+export const createSpotImage = (spotId, url, preview) => async dispatch => {
+    const res = await fetch(`/api/spot/${spotId}/images`, {
+        method: 'POST',
+        body: JSON.stringify(
+            {
+                url, preview
+            }
+        )
+    });
+    const data = await res.json();
+    dispatch(createImage(data));
+    return res
+}
 
 const initialState = { spots: [] }
 

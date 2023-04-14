@@ -50,18 +50,32 @@ export const getCurrentSpotThunk = (spotId) => async (dispatch) => {
 
 
 export const createSpotThunk = (
-    country, address, city, state, lat, lng, description, title, price, PreviewImage
+    country, address, city, state, lat, lng, description, name, price,
 ) => async dispatch => {
     const res = await fetch('/api/spots', {
         method: 'POST',
         body: JSON.stringify(
             {
-                country, address, city, state, lat, lng, description, title, price, PreviewImage
+                country, address, city, state, lat, lng, description, name, price, 
             }
         )
     });
     const data = await res.json();
     dispatch(createSpot(data));
+    return res
+}
+
+export const createSpotImage = (spotId, url, preview) => async dispatch => {
+    const res = await fetch(`/api/spot/${spotId}/images`, {
+        method: 'POST',
+        body: JSON.stringify(
+            {
+                url, preview
+            }
+        )
+    });
+    const data = await res.json();
+    dispatch(createImage(data));
     return res
 }
 

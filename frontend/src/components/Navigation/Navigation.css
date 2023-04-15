@@ -45,3 +45,11 @@
 .logged-in{
     cursor: default;
 }
+
+.create-spot-button-box {
+    position: absolute;
+    right: 60px;
+    top: 26.5px;
+    cursor: pointer;
+    z-index: 1;
+}

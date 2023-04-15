@@ -2,16 +2,12 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import ProfileButton from './ProfileButton';
-import OpenModalButton from '../OpenModalButton';
-import LoginFormModal from '../LoginFormModal';
-import SignupFormModal from '../SignupFormModal';
-import OpenModalMenuItem from './OpenModalMenuItem';
-import * as sessionActions from '../../store/session';
 import logo from './logoImg/myAirBnBLogo.png'
 import './Navigation.css';
 
 function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
+  const spots = useSelector(state => state.spots);
 
 
 
@@ -24,6 +20,13 @@ function Navigation({ isLoaded }){
         </NavLink>
       </li>
     </ul>
+    <div className='create-spot-button-box'>
+        {isLoaded && sessionUser && (
+          <NavLink to='/spots/new'>
+              <span className='create-spot-button' >Create a Spot</span>
+            </NavLink>
+        )}
+        </div>
     <ul className='nav-bar-items'>
       <li>
       {isLoaded && (

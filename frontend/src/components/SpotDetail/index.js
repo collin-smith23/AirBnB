@@ -31,6 +31,7 @@ function SpotDetails() {
 
     const avgRating = (reviews) => {
         let sum = 0;
+        if (reviews.length < 1) return 'New'
         reviews.forEach(review => {
             sum += review.stars
         })

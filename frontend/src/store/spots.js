@@ -1,9 +1,9 @@
+import { csrfFetch } from "./csrf";
 
 const GET_CURRENT_SPOT = 'spots/getCurrentSpot';
 const GET_SPOTS = 'spots/getAllSpots';
 const ADD_SPOT = 'spots/create';
 const GET_REVIEWS = 'spots/getReviews';
-const ADD_IMAGE = 'spots/addImage';
 const DELETE_SPOT = 'spots/deleteReviews';
 
 const getCurrentSpot = (spot) => ({
@@ -21,11 +21,6 @@ const addSpot = (spot) => ({
     payload: spot,
 });
 
-const addImage = (image) => ({
-    type: ADD_IMAGE,
-    payload: image
-})
-
 const getReviews = (reviews) => ({ 
     type: GET_REVIEWS,
     payload: reviews,
@@ -37,7 +32,7 @@ const deleteSpot = (spot) => ({
 })
 
 export const getSpotsThunk = () => async (dispatch) => {
-    const res = await fetch('/api/spots');
+    const res = await csrfFetch('/api/spots');
 
     if (res.ok) {
         const list = await res.json();
@@ -47,14 +42,14 @@ export const getSpotsThunk = () => async (dispatch) => {
 };
 
 export const getReviewsThunk = (spotId) => async dispatch => {
-    const res = await fetch(`/api/spots/${spotId}/reviews`);
+    const res = await csrfFetch(`/api/spots/${spotId}/reviews`);
     const data = await res.json();
     dispatch(getReviews(data));
     return data;
 }
 
 export const getCurrentSpotThunk = (spotId) => async (dispatch) => {
-    const res = await fetch(`/api/spots/${spotId}`);
+    const res = await csrfFetch(`/api/spots/${spotId}`);
     const data = await res.json();
     dispatch(getCurrentSpot(data));
     return data;
@@ -66,11 +61,11 @@ export const createSpot = (
 ) => async (dispatch) => {
     const {country, address, city, state, lat, lng, description, name, price, previewImage} = spot
 
-    const res = await fetch('/api/spots', {
+    const res = await csrfFetch('/api/spots', {
         method: 'POST',
         body: JSON.stringify(
             {
-                spot
+                country, address, city, state, lat, lng, description, name, price, previewImage
             }
         )
     });
@@ -88,25 +83,13 @@ export const createSpot = (
         dispatch(addSpot(data));
         // dispatch(addImage(data));
 
-        return (res)
+        return data
     }
 }
 
-// export const createSpotImage = (spotId, url, preview) => async dispatch => {
-//     const res = await fetch(`/api/spot/${spotId}/images`, {
-//         method: 'POST',
-//         body: JSON.stringify(
-//             {
-//                 url, preview
-//             }
-//         )
-//     });
-//     const data = await res.json();
-//     dispatch(createImage(data));
-//     return res
-// }
 
-const initialState = {  }
+
+const initialState = { }
 
 const spotReducer = (state = initialState, action) => {
     let newState = { ...state }
@@ -125,11 +108,6 @@ const spotReducer = (state = initialState, action) => {
             return {
                 ...newState,
                 spots: action.payload
-            }
-        case ADD_IMAGE:
-            return {
-                ...newState,
-                image: action.payload
             }
         case GET_REVIEWS:
             return {

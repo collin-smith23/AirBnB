@@ -53,3 +53,7 @@
     cursor: pointer;
     z-index: 1;
 }
+
+.manage-spots{
+    color: gray;
+}

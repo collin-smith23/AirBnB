@@ -1,68 +1,61 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { csrfFetch } from '../../store/csrf';
+import React, { useEffect, useState, useSyncExternalStore } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import * as spotActions from '../../store/spots';
 import * as imageAction from '../../store/images';
-import './createSpot.css';
+import './editSpot.css';
 
-function CreateSpot(){
+function EditSpot(){
     const dispatch = useDispatch();
     const history = useHistory();
     const sessionUser = useSelector((state) => state.session.user)
-    const spots = useSelector((state) => state.spots);
+    const spots = useSelector((state) => state)
+    console.log('this is spots', spots)
+
+    const [currentSpot, setCurrentSpot] = useState({});
     
-    const [country, setCountry] = useState('');
-    const [address, setAddress] = useState('');
-    const [city, setCity] = useState('');
-    const [state, setState] = useState('');
-    const [lat, setLat] = useState('');
-    const [lng, setLng] = useState('');
+    
+    // const [spotId, setSpotId] = useState('useParams()');
+    const [ownerId, setOwnerId] = useState('');
+    
+    const [country, setCountry] = useState(spots?.country || '');
+    const [address, setAddress] = useState(spots?.address || '');
+    const [city, setCity] = useState(spots?.city || '');
+    const [state, setState] = useState(spots?.state || '');
+    const [lat, setLat] = useState(spots.lat || '');
+    const [lng, setLng] = useState(spots.lng ||'');
     const [description, setDescription] = useState('');
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     
     const [errors, setErrors] = useState([]);
-    const [previewImage, setPreviewImage] = useState('');
-    // const [preview, setPreview] = useState(false);
+    const {spotId} = useParams();
     
-    const [imgOne, setImgOne] = useState({});
-    const [imgTwo, setImgTwo] = useState({});
-    const [imgThree, setImgThree] = useState({});
-    const [imgFour, setImgFour] = useState({});
+    useEffect(() => {
+        dispatch(spotActions.getCurrentSpotThunk(spotId))
+            .then(currentSpot => setCurrentSpot(currentSpot))
+            console.log('this is current spot', currentSpot)
+            // setOwnerId(currentSpot.ownerId)
+            // setCountry(currentSpot.country)
+            // setAddress(currentSpot.address)
+            // setCity(currentSpot.city)
+            // setState(currentSpot.state)
+            // setLat(currentSpot.lat)
+            //    setLng(currentSpot.lng)
+            //    setDescription(currentSpot.description)
+            //    setName(currentSpot.name)
+            //    setPrice(currentSpot.price)
 
-    if(!sessionUser) return <Redirect to='/'/>
+        }, [spotId])
 
-
-    const handleImageInput = (newUrl, idx) => {
-        if (idx === 0){
-            setPreviewImage({url:newUrl, preview: true})
+        if (ownerId !== sessionUser.id) {
+            console.log('You should not see this')
         }
-        if (idx === 1) {
-            setImgOne({url:newUrl, preview:false});
-        }
-        if (idx === 2) {
-            setImgTwo({url:newUrl, preview:false});
-        }
-        if (idx === 3) {
-            setImgThree({url:newUrl, preview:false});
-        }
-        if (idx === 4) {
-            setImgFour({url:newUrl, preview:false});
-        }
-    }
-
-    const isValidImg = (img, currErrs) => {
-        if (!img) return null;
-        let validTypes = ['.png', '.jpg', 'jpeg']
-        let type = img.slice(-4)
-        if (!validTypes.includes(type)) {
-            currErrs.push('Image URL must end in .png, .jpg, or .jpeg')
-        }
-        else return;
-    }
-
-
+        
+    
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrors([]);
@@ -77,24 +70,17 @@ function CreateSpot(){
         if(!description) currErrs.push('Description needs a minimum of 30 characters');
         if(!name) currErrs.push('Name is required');
         if (!price) currErrs.push('Price is required');
-        if(!previewImage) currErrs.push('Preview image is required');
-        isValidImg(previewImage.url, currErrs);
-        isValidImg(imgOne.url, currErrs);
-        isValidImg(imgTwo.url, currErrs);
-        isValidImg(imgThree.url, currErrs);
-        isValidImg(imgFour.url, currErrs);
 
 
             if(!currErrs.length){
-                const newSpot = await dispatch( spotActions.createSpot({ country, address, city, state, lat, lng, description, name, price}));
-            const {id} = newSpot
+        let updatedSpot = await csrfFetch(`/api/spots/${spotId}`, {
+            method: 'PUT',
+            Headers: {
+                'Content-Type': 'application/json'},
+            body: JSON.stringify({country, address, city, state, lat, lng, description, name, price})
+        })
             
-            const image = await dispatch(imageAction.createSpotImage(previewImage, id));
-            if (imgOne) await dispatch(imageAction.createSpotImage(imgOne, id));
-            if (imgTwo) await dispatch(imageAction.createSpotImage(imgTwo, id));
-            if (imgThree) await dispatch(imageAction.createSpotImage(imgThree, id));
-            if (imgFour) await dispatch(imageAction.createSpotImage(imgFour, id));   
-            return history.push(`${id}`);
+            return history.push(`${spotId}`);
         }
         setErrors(currErrs)
         console.log(errors);
@@ -108,7 +94,7 @@ function CreateSpot(){
                         {errors.map((error, idx) => <li key={idx}>{error}</li>)}
                     </ul>
                 )} */}
-                <h1 className='create-spot-title'>Create a new Spot</h1>
+                <h1 className='create-spot-title'>Update a Spot</h1>
                 <h2 className='asking-for-new-spot'>Where's your place located?</h2>
                 <p>Guests will only get your exact address once they booked a reservation</p>
                     <div className = 'address-input'>
@@ -159,7 +145,8 @@ function CreateSpot(){
                     <input name='price' className='create-spot-input' placeholder='Price per night (USD)' value={price} onChange={(e) => setPrice(e.target.value)}></input>
                     {errors.includes('Price is required') && <div className='error-message'>Price is required</div>}
                 </label>
-                <h3 className='upload-photo-section'>Liven up your spot with photos</h3>
+                {/* optional image section not working yet */} 
+                {/* {/* <h3 className='upload-photo-section'>Liven up your spot with photos</h3>
                 <p>Submit a link to at least one photo to publish your spot.</p>
                     <input className='preview-image-input' type='text' placeholder='Preview Image Url' value={previewImage.url} onChange={(e) => handleImageInput(e.target.value, 0)}></input>
                     {errors.includes('Preview image is required') && <div className='error-message'>Preview Image is required</div>}
@@ -167,7 +154,7 @@ function CreateSpot(){
                     {errors.includes('Image URL must end in .png, .jpg, or .jpeg') && <div className="error-message">Image URL must end in .png, .jpg, or .jpeg</div>}
                     <input className='spot-image-input' type='text' placeholder='Image Url' value={imgTwo.url} onChange={(e) => handleImageInput(e.target.value, 2)}></input>
                     <input className='spot-image-input' type='text' placeholder='Image Url' value={imgThree.url} onChange={(e) => handleImageInput(e.target.value, 3)}></input>
-                    <input className='spot-image-input' type='text' placeholder='Image Url' value={imgFour.url} onChange={(e) => handleImageInput(e.target.value, 4)}></input>
+                    <input className='spot-image-input' type='text' placeholder='Image Url' value={imgFour.url} onChange={(e) => handleImageInput(e.target.value, 4)}></input> */}
                     <button className='submit-spot-btm' type='submit' onClick={handleSubmit}>Submit</button>
 
             </form>
@@ -176,4 +163,4 @@ function CreateSpot(){
 
 }
 
-export default CreateSpot;
+export default EditSpot;

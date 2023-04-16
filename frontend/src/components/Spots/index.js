@@ -35,7 +35,7 @@ function Spots() {
             <img className='spot-image' src={imgSource(spot)}/>
             <div>{spot.city}, {spot.state}
                 <div className="avg-rating" title={spot.name}>
-                    {`${averageRating(spot)}`}
+                    {`⭐ ${averageRating(spot)}`}
                 </div>
                 <div className="spot-price">
                     {`$${spot.price} night`}

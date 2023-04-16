@@ -11,9 +11,7 @@ function SpotDetails() {
     const [currSpot, setcurrSpot] = useState('');
     const [reviews, setreviews] = useState([])
 
-    const user = useSelector(state => state.session.user);
-    const spot = currSpot;
-    console.log(currSpot)
+    const sessionUser = useSelector((state) => state.session.user)
 
 
     useEffect(() => {

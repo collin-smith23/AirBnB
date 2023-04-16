@@ -53,6 +53,10 @@ function SpotDetails() {
         const formattedDate = `${month}, ${day}`
         return formattedDate
     }
+    const ownerId = currSpot.ownerId;
+    const userId = sessionUser.id;
+    console.log('this is ownerId', ownerId)
+    console.log('this is sessionUserId', userId)
 
 
 
@@ -73,21 +77,27 @@ function SpotDetails() {
                     <span className="reserve-button-container">
                         <div className="price-div">{`$${currSpot.price} night`}</div> 
                         <div className="reviews-preview-div">
-                            {reviews.length > 0 && (
-                                <>
                                 <div className="avg-stars-div"> 
                              {`★${avgRating(reviews)}`}
-                            </div>
+                                </div>
+                            {reviews.length > 0 && (
+                                <>
                             <div className="review-star-average-dot">
                             ·
+                            </div>
+                            <div className="num-reviews-div">
+                              {`${numberReviews(reviews)}`}
                             </div>
                                 </>
                                 )
                             }
-                            <div className="num-reviews-div">
-                              {`${numberReviews(reviews)}`}
-                            </div>
                         </div> 
+                            {!reviews.length && userId !== ownerId && (
+                                <>
+                                <button>Post Your Review</button>
+                                <div>Be the first to leave a review</div>
+                                </>
+                            )}
                         <button className="reserve-button"
                             onClick={() => window.alert("Feature Coming Soon...")}
                             >Reserve</button>

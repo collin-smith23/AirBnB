@@ -168,7 +168,7 @@ function CreateSpot(){
                     <input className='spot-image-input' type='text' placeholder='Image Url' value={imgTwo.url} onChange={(e) => handleImageInput(e.target.value, 2)}></input>
                     <input className='spot-image-input' type='text' placeholder='Image Url' value={imgThree.url} onChange={(e) => handleImageInput(e.target.value, 3)}></input>
                     <input className='spot-image-input' type='text' placeholder='Image Url' value={imgFour.url} onChange={(e) => handleImageInput(e.target.value, 4)}></input>
-                    <button className='submit-spot-btm' type='submit' onClick={handleSubmit}>Submit</button>
+                    <button className='submit-spot-btm' type='submit' onClick={handleSubmit}>Create Spot</button>
 
             </form>
         </div>

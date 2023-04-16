@@ -73,9 +73,17 @@ function SpotDetails() {
                     <span className="reserve-button-container">
                         <div className="price-div">{`$${currSpot.price} night`}</div> 
                         <div className="reviews-preview-div">
-                            <div className="avg-stars-div"> 
+                            {reviews.length > 0 && (
+                                <>
+                                <div className="avg-stars-div"> 
                              {`★${avgRating(reviews)}`}
                             </div>
+                            <div className="review-star-average-dot">
+                            ·
+                            </div>
+                                </>
+                                )
+                            }
                             <div className="num-reviews-div">
                               {`${numberReviews(reviews)}`}
                             </div>

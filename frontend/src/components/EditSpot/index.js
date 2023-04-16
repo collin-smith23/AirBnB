@@ -14,47 +14,47 @@ function EditSpot(){
     const spots = useSelector((state) => state)
     console.log('this is spots', spots)
 
-    const [currentSpot, setCurrentSpot] = useState({});
+    // const [currentSpot, setCurrentSpot] = useState({});
+    const {spotId} = useParams();
+
+
     
     
-    // const [spotId, setSpotId] = useState('useParams()');
-    const [ownerId, setOwnerId] = useState('');
+
     
-    const [country, setCountry] = useState(spots?.country || '');
-    const [address, setAddress] = useState(spots?.address || '');
-    const [city, setCity] = useState(spots?.city || '');
-    const [state, setState] = useState(spots?.state || '');
-    const [lat, setLat] = useState(spots.lat || '');
-    const [lng, setLng] = useState(spots.lng ||'');
+    const [country, setCountry] = useState('');
+    const [address, setAddress] = useState('');
+    const [city, setCity] = useState('');
+    const [state, setState] = useState('');
+    const [lat, setLat] = useState('');
+    const [lng, setLng] = useState('');
     const [description, setDescription] = useState('');
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     
     const [errors, setErrors] = useState([]);
-    const {spotId} = useParams();
+    const currentSpot = useSelector((state) => state.spot.currentSpot)
     
     useEffect(() => {
         dispatch(spotActions.getCurrentSpotThunk(spotId))
-            .then(currentSpot => setCurrentSpot(currentSpot))
-            console.log('this is current spot', currentSpot)
-            // setOwnerId(currentSpot.ownerId)
-            // setCountry(currentSpot.country)
-            // setAddress(currentSpot.address)
-            // setCity(currentSpot.city)
-            // setState(currentSpot.state)
-            // setLat(currentSpot.lat)
-            //    setLng(currentSpot.lng)
-            //    setDescription(currentSpot.description)
-            //    setName(currentSpot.name)
-            //    setPrice(currentSpot.price)
+            .catch(err => console.log(err));
+    }, [dispatch, spotId])
 
-        }, [spotId])
-
-        if (ownerId !== sessionUser.id) {
-            console.log('You should not see this')
-        }
-        
+    console.log('this is my current spot', currentSpot)
     
+    useEffect(() => {
+        if (currentSpot) {
+            setCountry(currentSpot.country);
+            setAddress(currentSpot?.address || '');
+            setCity(currentSpot?.city || '');
+            setState(currentSpot?.state || '');
+            setLat(currentSpot?.lat || '');
+            setLng(currentSpot?.lng || '');
+            setDescription(currentSpot?.description || '');
+            setName(currentSpot?.name || '');
+            setPrice(currentSpot?.price || '');
+        }
+    }, [currentSpot])
     
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -71,16 +71,12 @@ function EditSpot(){
         if(!name) currErrs.push('Name is required');
         if (!price) currErrs.push('Price is required');
 
+        const spot = { country, address, city, state, lat, lng, description, name, price}
+
 
             if(!currErrs.length){
-        let updatedSpot = await csrfFetch(`/api/spots/${spotId}`, {
-            method: 'PUT',
-            Headers: {
-                'Content-Type': 'application/json'},
-            body: JSON.stringify({country, address, city, state, lat, lng, description, name, price})
-        })
-            
-            return history.push(`${spotId}`);
+        let updatedSpot = await dispatch(spotActions.updateSpot(spotId, spot))
+        if(updatedSpot) return history.push(`${spotId}`);
         }
         setErrors(currErrs)
         console.log(errors);
@@ -88,13 +84,13 @@ function EditSpot(){
 
     return (
         <div className="create-spot-form-box">
+                <h1 className='create-spot-title'>Update a Spot</h1>
             <form className='create-spot-form' onSubmit={handleSubmit}>
                 {/* {errors.length > 0 && (
                     <ul className='error-text'>
                         {errors.map((error, idx) => <li key={idx}>{error}</li>)}
                     </ul>
                 )} */}
-                <h1 className='create-spot-title'>Update a Spot</h1>
                 <h2 className='asking-for-new-spot'>Where's your place located?</h2>
                 <p>Guests will only get your exact address once they booked a reservation</p>
                     <div className = 'address-input'>
@@ -155,7 +151,7 @@ function EditSpot(){
                     <input className='spot-image-input' type='text' placeholder='Image Url' value={imgTwo.url} onChange={(e) => handleImageInput(e.target.value, 2)}></input>
                     <input className='spot-image-input' type='text' placeholder='Image Url' value={imgThree.url} onChange={(e) => handleImageInput(e.target.value, 3)}></input>
                     <input className='spot-image-input' type='text' placeholder='Image Url' value={imgFour.url} onChange={(e) => handleImageInput(e.target.value, 4)}></input> */}
-                    <button className='submit-spot-btm' type='submit' onClick={handleSubmit}>Submit</button>
+                    <button className='submit-spot-btm' type='submit' onClick={handleSubmit}>Update Your Spot</button>
 
             </form>
         </div>

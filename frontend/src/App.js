@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 // import LoginFormPage from './components/LoginFormPage';
 // import SingupFormPage from './components/SignupFormPage';
 import * as sessionActions from './store/session';
+import * as spotActions from './store/spots'
 import Navigation from './components/Navigation';
 import SpotDetails from './components/SpotDetail'
 import Spots from './components/Spots';
@@ -18,6 +19,7 @@ function App() {
 
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
+    dispatch(spotActions.getSpotsThunk())
   }, [dispatch]);
 
   return (
@@ -31,10 +33,10 @@ function App() {
         <Route exact path='/spots/new'>
           <CreateSpot />
           </Route>
-        <Route exact path='/spots/current'>
+        <Route exact path='/spots/current'> element={ManageSpots}
           <ManageSpots />
           </Route>
-        <Route path='/spots/:spotId/edit' spot={SpotDetails}>
+        <Route path='/spots/:spotId/edit' element={EditSpot}>
           <EditSpot />
         </Route>
         <Route path='/spots/:spotId' spot={SpotDetails}>

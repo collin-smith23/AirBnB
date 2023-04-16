@@ -99,16 +99,17 @@ export const createSpot = (
     }
 }
 
-export const updateSpot = (
-    spot 
-) => async (dispatch) => {
-    const { spotId, country, address, city, state, lat, lng, description, name, price, previewImage } = spot;
+export const updateSpot = (spotId, spot) => async (dispatch) => {
+    const { country, address, city, state, lat, lng, description, name, price } = spot;
 
-    const res = await csrfFetch(`api/spots/${spotId}`, {
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
         method: 'PUT',
+        headers: {
+            'Content-Type' : 'application/json'
+        },
         body: JSON.stringify(
             {
-                country, address, city, state, lat, lng, description, name, price, previewImage
+                country, address, city, state, lat, lng, description, name, price
             }
         )
     });
@@ -116,10 +117,8 @@ export const updateSpot = (
     if (res.ok) {
         const data = await res.json();
         dispatch(editSpot(data))
+        return data;
     }
-
-
-
 }
 
 export const removeSpot = (spotId) => async (dispatch) => {
@@ -128,6 +127,9 @@ export const removeSpot = (spotId) => async (dispatch) => {
     const res = await csrfFetch(`/api/spots/${spotId}`, {
         method: 'DELETE',
     })
+    const data = await res.json();
+    dispatch(deleteSpot(spotId))
+    return data;
 }
 
 

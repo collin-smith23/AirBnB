@@ -75,11 +75,13 @@ function ManageSpots(){
         <div className='spots-slot'>
             {spots.map(spot=> (
                 <div className='spot-slot' title={spot.name} >
-                <img className='spot-image' src={spot.previewImage} alt={spot.name} onClick={() => window.location.href = `${spot.id}`} />
+                    <div className='spot-select' title={spot.name}  onClick={() => window.location.href = `${spot.id}`}>
+                <img className='spot-image' src={spot.previewImage} alt={spot.name} />
                 <span>{spot.city}, {spot.state}
                     <div className='avg-rating'>{`⭐ ${averageRating(spot)}`}</div>
                     <div className='spot-price'>{`$${spot.price} night`}</div>
                 </span>
+                    </div>
                 <div className='delete-update-buttons'>
                     <button className='delete-button' onClick={() => handleDeleteClick(spot.id)}>Delete</button>
 

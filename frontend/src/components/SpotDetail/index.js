@@ -15,6 +15,7 @@ function SpotDetails() {
     const sessionUser = useSelector((state) => state.session.user)
 
     console.log('this is the reviews', reviews)
+    console.log('this is sessionUser', sessionUser)
 
     
     useEffect(() => {
@@ -36,14 +37,18 @@ function SpotDetails() {
             
             //     const 
             // })
-    const isUsersReview = (review, userId) => {
+    const isUsersReview = (review, sessionUser) => {
+        if(!sessionUser) return false;
+        let userId = sessionUser.id;
         console.log('this is my functions review', review);
         if(review.User.id === userId){
             return true;
             } else return false;
             }
 
-    const userHasReviewed = (reviews, userId) => {
+    const userHasReviewed = (reviews, sessionUser) => {
+        if(!sessionUser) return false;
+        let userId = sessionUser.id;
         let hasReviewed = false;
         reviews.forEach(review => {
             if(review.userId === userId) {
@@ -81,7 +86,9 @@ function SpotDetails() {
         return formattedDate
     }
     const ownerId = currSpot.ownerId;
-    const userId = sessionUser.id;
+    
+    let userId;
+    if(sessionUser) userId = sessionUser.id
     console.log('this is ownerId', ownerId)
     console.log('this is sessionUserId', userId)
 
@@ -126,17 +133,25 @@ function SpotDetails() {
                                 )
                             }
                         </div> 
-                            {!userHasReviewed(reviews, userId) && userId !== ownerId && (
+                        {(sessionUser !== undefined) && (
+                            <>
+                            <div className="show-review-button-box">
+                            {!userHasReviewed(reviews, sessionUser) && userId !== ownerId && (
                                 <>
                                 <button className="show-review-button" onClick={(e) => setShowReviewForm(true)}>Post Your Review</button>
                                 </>
-                            )
-                        }
-                        {!reviews.length && userId !== ownerId && (
-                            <>
+                                )
+                            }
+                            </div>
+                            <div className="be-first-text">
+                            {!reviews.length && userId !== ownerId && (
+                                <>
                             <div>Be the first to leave a review</div>
                             </>
-                        )}
+                            )}
+                            </div>
+                            </>
+                            )}
                         <button className="reserve-button"
                             onClick={() => window.alert("Feature Coming Soon...")}
                             >Reserve</button>
@@ -150,9 +165,13 @@ function SpotDetails() {
                                         <p className="description">
                                         {review.review}
                                         </p>
-                                        {isUsersReview(review, userId) && (
+                                        {(sessionUser !== undefined) && (
+                                            <div className="delete-button-box">
+                                        {isUsersReview(review, sessionUser) && (
                                             <button>delete review</button>
-                                        )}
+                                            )}
+                                            </div>
+                                            )}
                                     </li>
                                 ))}
                             </ul>

@@ -72,7 +72,9 @@ function PostReviewFormModal() {
             <input placeholder='Leave your review here...' value={review} onChange={(e) => {setReview(e.target.value)}}></input>
         </div>
         <div className='stars-container'>
-            <StarRating stars={stars} setStars={setStars} setHoveredStar={setHoveredStar} />
+            <label>
+            <StarRating stars={stars} setStars={setStars} setHoveredStar={setHoveredStar} /> stars
+            </label>
         </div>
         <button disabled={!validReview || !validStars}>Submit Your Review</button>
         </form>

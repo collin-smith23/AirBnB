@@ -33,7 +33,7 @@ function ManageSpots(){
         dispatch(spotActions.removeSpot(spotId));
         dispatch(spotActions.getUserSpots());
                setShowDeleteModal(false)
-           return history.push('/spots/current');
+           window.location.reload();
       };
 
       const handleEditClick = () => {

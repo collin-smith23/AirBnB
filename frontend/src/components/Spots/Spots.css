@@ -17,3 +17,32 @@
     object-fit: cover;
     margin-bottom: 10px;
 }
+
+.spot-info-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.spot-city-and-state {
+    margin-bottom: 15px;
+}
+
+.avg-rating {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-weight: bold;
+}
+
+.spot-price {
+    font-weight: bold;
+}
+
+@media (max-width: 500px) {
+    .spots-slot {
+        grid-template-columns: 1fr;
+    }
+}

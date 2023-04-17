@@ -44,6 +44,7 @@ function ManageSpots(){
     const averageRating = (spot) => {
         if (spot.avgRating === null) spot.avgRating = 'New'
         return spot.avgRating
+        
     }
 
     useEffect(() => {

@@ -61,10 +61,12 @@
 }
 
 .nav-bar {
-    border-bottom: 1px solid black; /* or any other color */
+    border-bottom: 2px solid rgb(201, 197, 197); /* or any other color */
   }
 
 .drop-down-button-box {
     cursor: pointer;
 }
+
+
   

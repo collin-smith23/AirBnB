@@ -1,11 +1,39 @@
+.spot-details-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
+.title-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.title-of-spot {
+  font-size: 32px;
+  font-weight: bold;
+  /* float: left; */
+  /* margin: 0; */
+  margin: 5px;
+  top: 10px;
+}
+
+.location-info-h3 {
+  font-size: 20px;
+  margin: 5px 0 20px;
+}
+
 .spot-image-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    max-height: 600px;
   }
   
   .main-spot-image-container {
     flex: 1 1 50%;
+    max-height: 600px;
   }
   
   .spot-image-grid {
@@ -29,5 +57,131 @@
   
   .spot-image-small {
     width: 48%;
+    height: 200px;
     margin-bottom: 10px;
+    object-fit: cover;
   }
+
+  .spot-description {
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .reserve-button-container {
+    display: flex;
+    float: right;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 300px; /* adjust to the desired width of the box */
+    height: 100px; /* adjust to the desired height of the box */
+    border: 2px groove black; /* add a border to the box */
+    border-radius: 5%;
+    padding: 10px; /* add some padding inside the box */
+    margin-top: -100px;
+  }
+
+  .price-div {
+    font-size: 20px; /* adjust to the desired font size */
+    font-weight: bold; /* make the price bold */
+  }
+  
+  .reviews-preview-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .avg-stars-div, .num-reviews-div {
+    font-size: 20px;
+  }
+
+  .review-star-average-dot {
+    margin: 0 5px;
+    font-size: 50px;
+  }
+
+
+  .reviews-bigger-div {
+
+  }
+
+  
+.avg-stars-h2, .num-reviews-h2 {
+
+}
+
+.review-star-average-dot-h2 {
+
+}
+
+/* Style for the show review button */
+.show-review-button-box {
+  margin-top: 20px;
+}
+
+.show-review-button {
+  background-color: #2196f3;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Style for the be first text */
+.be-first-text {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+/* Style for the reserve button */
+.reserve-button {
+  width: 100%;
+  height: 40px; /* adjust to the desired height of the button */
+  background-color: rgb(224, 55, 55); /* change the background color of the button */
+  color: white; /* change the text color of the button */
+  border: 2px inset black; /* remove the button border */
+  border-radius: 5px; /* add some border radius to the button */
+  font-size: 16px; /* adjust to the desired font size */
+  cursor: pointer; /* change the cursor to a pointer when hovering over the button */
+}
+
+/* Style for the reviews section */
+.reviews-span {
+  display: block;
+}
+
+.review-details-container {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.review-details-li {
+  margin-bottom: 20px;
+}
+
+.reviews-section {
+  border-top: 2px solid gray;
+  margin-top: 100px;
+}
+
+/* .reviews-bigger-div :not(.first-to-leave-text) {
+    display: flex;  
+    align-items: center;
+} */
+
+.post-review-button {
+  margin-left: 10px;
+}
+
+.description {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}

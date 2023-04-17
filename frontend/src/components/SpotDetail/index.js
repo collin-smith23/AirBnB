@@ -126,8 +126,10 @@ function SpotDetails() {
             )}
             {currSpot ? (
                 <div>
-                    <h1 className="title-of-spot">{currSpot.name}</h1>
-                    <h3 className="location-info-h3">{currSpot.city},{currSpot.state},{currSpot.country}</h3>
+                    <div className="title-section">
+                    <h2 className="title-of-spot">{currSpot.name}</h2>
+                    <h3 className="location-info-h3">{currSpot.city}, {currSpot.state}, {currSpot.country}</h3>
+                    </div>
                     <div className='spot-image-container'>
                         <div className='main-spot-image-container'>
                         {currSpot.SpotImages.filter(img => img.preview).map(img => (
@@ -137,15 +139,15 @@ function SpotDetails() {
 
                     <div className="spot-image-grid">
                         {currSpot.SpotImages.filter(img => !img.preview).map(img => (
-                        <img className="spot-image-small" src={img.url}/>
+                            <img className="spot-image-small" src={img.url}/>
                             ))}
                     </div>
                     </div>
                     <h2>Hosted by {currSpot.Owner.firstName}, {currSpot.Owner.lastName}</h2>
                     <p className="spot-description"> {currSpot.description} </p>
                     <span className="reserve-button-container">
-                        <div className="price-div">{`$${currSpot.price} night`}</div> 
                         <div className="reviews-preview-div">
+                        <div className="price-div">{`$${currSpot.price} night`}</div> 
                                 <div className="avg-stars-div"> 
                              {`★${avgRating(reviews)}`}
                                 </div>
@@ -161,6 +163,13 @@ function SpotDetails() {
                                 )
                             }
                         </div> 
+                            <button className="reserve-button"
+                                onClick={() => window.alert("Feature Coming Soon...")}
+                                >Reserve</button>
+                                </span>
+                    <div className="reviews-section">
+                            <div className="reviews-bigger-div">
+
                         <div className="reviews-bigger-div">
                                 <h2 className="avg-stars-h2"> 
                              {`★${avgRating(reviews)}`}
@@ -189,17 +198,12 @@ function SpotDetails() {
                             </div>
                             <div className="be-first-text">
                             {!reviews.length && userId !== ownerId && (
-                                <>
-                            <div>Be the first to leave a review</div>
-                            </>
+                            <div className="first-to-leave-text">Be the first to leave a review</div>
                             )}
                             </div>
                             </>
                             )}
-                        <button className="reserve-button"
-                            onClick={() => window.alert("Feature Coming Soon...")}
-                            >Reserve</button>
-                            </span>
+                            </div>
                     <span className="reviews-span">
                             <ul className="review-details-container">
                                 {reviews.map(review => (
@@ -222,6 +226,7 @@ function SpotDetails() {
                                 ))}
                             </ul>
                     </span>
+                                </div>
 
                 </div>
             ) : (

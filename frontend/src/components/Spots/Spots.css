@@ -1,24 +1,19 @@
 .spots-slot{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    position: relative;
-    top: 300px;
-    border: 1px solid black;
-    align-content: space-evenly;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 20px;
+    margin-top: 150px;
+    cursor: pointer;
 }
 
 .spot-slot{
-    border: 1px solid green;
-    margin: 15px;
-    max-width: 25%;
-    min-width: 300px;
+    display: flex;
+    flex-direction: column;
 }
 
 .spot-image{
-    border: 1px solid red;
+    width: 100%;
+    height: 200px;
     object-fit: cover;
-    max-width: 100%;
-    height: auto;
-    background-image:url('https://vignette.wikia.nocookie.net/luigi-mansionfanon/images/3/33/No_Preview.png/revision/latest/scale-to-width-down/480?cb=20101212051457') ;
+    margin-bottom: 10px;
 }

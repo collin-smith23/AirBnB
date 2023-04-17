@@ -30,7 +30,7 @@ function Navigation({ isLoaded }){
     <ul className='nav-bar-items'>
       <li>
       {isLoaded && (
-        <li>
+        <li className='drop-down-button-box'>
           <ProfileButton user={sessionUser} />
         </li>
       )}

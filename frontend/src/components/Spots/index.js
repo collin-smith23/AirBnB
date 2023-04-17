@@ -32,7 +32,7 @@ function Spots() {
         <div className="spots-slot">
     {spots.map(spot => (
         <div className="spot-slot" title={spot.name} onClick={() => window.location.href = `/spots/${spot.id}`}>
-            <img className='spot-image' src={imgSource(spot)}/>
+            <img className='spot-image' src={imgSource(spot)} alt={spot.name}/>
             <div>{spot.city}, {spot.state}
                 <div className="avg-rating" title={spot.name}>
                     {`⭐ ${averageRating(spot)}`}

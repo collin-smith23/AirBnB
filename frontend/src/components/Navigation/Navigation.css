@@ -14,6 +14,7 @@
 
 .home-button-container{
     list-style-type: none;
+    margin-bottom: 100px; /* add some margin to the bottom */
 }
 
 .nav-bar-items{
@@ -21,6 +22,7 @@
     position: absolute;
     right: 10px;
     top: 10px;
+    padding-bottom: 100px; /* add some padding to the bottom */
 }
 
 .logo-image{
@@ -57,3 +59,12 @@
 .manage-spots{
     color: gray;
 }
+
+.nav-bar {
+    border-bottom: 1px solid black; /* or any other color */
+  }
+
+.drop-down-button-box {
+    cursor: pointer;
+}
+  

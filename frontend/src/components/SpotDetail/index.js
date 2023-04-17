@@ -106,7 +106,7 @@ function SpotDetails() {
         setShowReviewDelete(false);
     }
 
-
+    console.log(currSpot)
 
     return (
         <div>
@@ -129,10 +129,17 @@ function SpotDetails() {
                     <h1 className="title-of-spot">{currSpot.name}</h1>
                     <h3 className="location-info-h3">{currSpot.city},{currSpot.state},{currSpot.country}</h3>
                     <div className='spot-image-container'>
-                    {currSpot.SpotImages.map(img => (
-                        <img className="spot-image-img" src={img.url}/>
-                    ))
-                    }
+                        <div className='main-spot-image-container'>
+                        {currSpot.SpotImages.filter(img => img.preview).map(img => (
+                            <img className="spot-image-main" src={img.url} alt="Main Image"/>
+                            ))}
+                            </div>
+
+                    <div className="spot-image-grid">
+                        {currSpot.SpotImages.filter(img => !img.preview).map(img => (
+                        <img className="spot-image-small" src={img.url}/>
+                            ))}
+                    </div>
                     </div>
                     <h2>Hosted by {currSpot.Owner.firstName}, {currSpot.Owner.lastName}</h2>
                     <p className="spot-description"> {currSpot.description} </p>

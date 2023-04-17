@@ -128,7 +128,7 @@ export const removeSpot = (spotId) => async (dispatch) => {
         method: 'DELETE',
     })
     const data = await res.json();
-    dispatch(deleteSpot(spotId))
+    dispatch(deleteSpot(data))
     return data;
 }
 

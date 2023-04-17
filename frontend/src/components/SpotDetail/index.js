@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector} from 'react-redux'
 import * as spotActions from '../../store/spots'
+import CreateReviewModal from '../CreatReviewModal'
 import './SpotDetail.css'
 
 
@@ -10,10 +11,12 @@ function SpotDetails() {
     const dispatch = useDispatch();
     const [currSpot, setcurrSpot] = useState('');
     const [reviews, setreviews] = useState([])
-
+    const [showReviewForm, setShowReviewForm] = useState(false)
     const sessionUser = useSelector((state) => state.session.user)
 
+    console.log('this is the reviews', reviews)
 
+    
     useEffect(() => {
         dispatch(spotActions.getCurrentSpotThunk(spotId))
             .then(currSpot => setcurrSpot(currSpot))
@@ -22,10 +25,34 @@ function SpotDetails() {
 
     useEffect(() => {
         dispatch(spotActions.getReviewsThunk(spotId))
-            .then(reviews => setreviews(reviews))
+        .then(reviews => setreviews(reviews))
             .catch(err => console.log(err));
-    }, [spotId]);
-    console.log(reviews[0])
+        }, [spotId]);
+
+        // console.log(reviews[0])
+        
+        // useEffect(() => {
+            //     if (!showReviewForm) return;
+            
+            //     const 
+            // })
+    const isUsersReview = (review, userId) => {
+        console.log('this is my functions review', review);
+        if(review.User.id === userId){
+            return true;
+            } else return false;
+            }
+
+    const userHasReviewed = (reviews, userId) => {
+        let hasReviewed = false;
+        reviews.forEach(review => {
+            if(review.userId === userId) {
+                hasReviewed = true;
+            }
+        })
+        if(hasReviewed) return true;
+        return false;
+    }
 
     const avgRating = (reviews) => {
         let sum = 0;
@@ -62,6 +89,13 @@ function SpotDetails() {
 
     return (
         <div>
+            {showReviewForm && (
+                <div className='create-review-form-box' >
+                    <div className="create-form-modal">
+                <CreateReviewModal />
+                    </div>
+                </div>
+            ) }
             {currSpot ? (
                 <div>
                     <h1 className="title-of-spot">{currSpot.name}</h1>
@@ -92,12 +126,17 @@ function SpotDetails() {
                                 )
                             }
                         </div> 
-                            {!reviews.length && userId !== ownerId && (
+                            {!userHasReviewed(reviews, userId) && userId !== ownerId && (
                                 <>
-                                <button>Post Your Review</button>
-                                <div>Be the first to leave a review</div>
+                                <button className="show-review-button" onClick={(e) => setShowReviewForm(true)}>Post Your Review</button>
                                 </>
-                            )}
+                            )
+                        }
+                        {!reviews.length && userId !== ownerId && (
+                            <>
+                            <div>Be the first to leave a review</div>
+                            </>
+                        )}
                         <button className="reserve-button"
                             onClick={() => window.alert("Feature Coming Soon...")}
                             >Reserve</button>
@@ -111,6 +150,9 @@ function SpotDetails() {
                                         <p className="description">
                                         {review.review}
                                         </p>
+                                        {isUsersReview(review, userId) && (
+                                            <button>delete review</button>
+                                        )}
                                     </li>
                                 ))}
                             </ul>

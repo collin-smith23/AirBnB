@@ -1,3 +1,59 @@
 .profile-dropdown.hidden {
     display: none;
 }
+
+.profile-dropdown {
+    list-style-type: none;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: flex-start;
+    cursor: pointer;
+}
+
+.home-button-container{
+    list-style-type: none;
+}
+
+.nav-bar-items{
+    list-style-type: none;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.logo-image{
+    position: absolute;
+    left: 10px;
+    top: 0px;
+    width: 175px;
+}
+
+/* .session-links{
+    list-style-type: none;
+    position: absolute;
+    width: 75px;
+    right: 10px;
+    top: -10px;
+} */
+
+.profile-dropdown li:not(.logged-in):hover{
+    font-weight: bold;
+}
+
+.logged-in{
+    cursor: default;
+}
+
+.create-spot-button-box {
+    position: absolute;
+    right: 60px;
+    top: 26.5px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.manage-spots{
+    color: gray;
+}

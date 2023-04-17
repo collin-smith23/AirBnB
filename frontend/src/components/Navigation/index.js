@@ -2,44 +2,41 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import ProfileButton from './ProfileButton';
-import OpenModalButton from '../OpenModalButton';
-import LoginFormModal from '../LoginFormModal';
-import SignupFormModal from '../SignupFormModal';
-import * as sessionActions from '../../store/session';
+import logo from './logoImg/myAirBnBLogo.png'
 import './Navigation.css';
 
 function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
+  const spots = useSelector(state => state.spots);
 
-  let sessionLinks;
-  if (sessionUser) {
-    sessionLinks = (
-      <li>
-        <ProfileButton user={sessionUser} />
-      </li>
-    );
-  } else {
-    sessionLinks = (
-      <li>
-        <OpenModalButton
-          buttonText="Log In"
-          modalComponent={<LoginFormModal />}
-        />
-        <OpenModalButton
-          buttonText="Sign Up"
-          modalComponent={<SignupFormModal />}
-        />
-      </li>
-    );
-  }
+
 
   return (
-    <ul>
-      <li>
-        <NavLink exact to="/">Home</NavLink>
+    <div className='nav-bar'>
+    <ul className='home-button-container'>
+      <li className='home-button-logo'>
+        <NavLink exact to="/" >
+          <img className ='logo-image' src={logo}/>
+        </NavLink>
       </li>
-      {isLoaded && sessionLinks}
     </ul>
+    <div className='create-spot-button-box'>
+        {isLoaded && sessionUser && (
+          <NavLink to='/spots/new'>
+              <span className='create-spot-button' >Create a Spot</span>
+            </NavLink>
+        )}
+        </div>
+    <ul className='nav-bar-items'>
+      <li>
+      {isLoaded && (
+        <li>
+          <ProfileButton user={sessionUser} />
+        </li>
+      )}
+      </li>
+    </ul>
+    </div>
   );
 }
 

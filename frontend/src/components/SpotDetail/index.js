@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector} from 'react-redux'
 import * as spotActions from '../../store/spots'
+import * as reviewActions from '../../store/reviews'
 import CreateReviewModal from '../CreatReviewModal'
+import DeleteReviewModal from '../DeleteReviewModal'
 import './SpotDetail.css'
 
 
@@ -10,12 +12,14 @@ function SpotDetails() {
     const {spotId} = useParams()
     const dispatch = useDispatch();
     const [currSpot, setcurrSpot] = useState('');
-    const [reviews, setreviews] = useState([])
+    const [reviews, setreviews] = useState([]);
+    const [reviewId, setReviewId] = useState('');
     const [showReviewForm, setShowReviewForm] = useState(false)
+    const [showReviewDelete, setShowReviewDelete] = useState(false)
     const sessionUser = useSelector((state) => state.session.user)
 
-    console.log('this is the reviews', reviews)
-    console.log('this is sessionUser', sessionUser)
+    // console.log('this is the reviews', reviews)
+    // console.log('this is sessionUser', sessionUser)
 
     
     useEffect(() => {
@@ -30,17 +34,10 @@ function SpotDetails() {
             .catch(err => console.log(err));
         }, [spotId]);
 
-        // console.log(reviews[0])
-        
-        // useEffect(() => {
-            //     if (!showReviewForm) return;
-            
-            //     const 
-            // })
     const isUsersReview = (review, sessionUser) => {
         if(!sessionUser) return false;
         let userId = sessionUser.id;
-        console.log('this is my functions review', review);
+        // console.log('this is my functions review', review);
         if(review.User.id === userId){
             return true;
             } else return false;
@@ -65,7 +62,9 @@ function SpotDetails() {
         reviews.forEach(review => {
             sum += review.stars
         })
-        return sum / reviews.length
+        const average = sum / reviews.length
+        if (average === parseFloat(average)) return average.toFixed(1)
+        return average.toFixed(2)
     };
 
     const numberReviews = (reviews) => {
@@ -89,8 +88,23 @@ function SpotDetails() {
     
     let userId;
     if(sessionUser) userId = sessionUser.id
-    console.log('this is ownerId', ownerId)
-    console.log('this is sessionUserId', userId)
+    // console.log('this is ownerId', ownerId)
+    // console.log('this is sessionUserId', userId)
+
+    const handleDeleteClick = (reviewId) => {
+        setReviewId(reviewId);
+        setShowReviewDelete(true);
+    }
+
+    const handleDeleteConfirm = () => {
+        dispatch(reviewActions.removeReview(reviewId));
+        setShowReviewDelete(false);
+        window.location.reload();
+    }
+
+    const handleDeleteCancel = () => {
+        setShowReviewDelete(false);
+    }
 
 
 
@@ -103,6 +117,13 @@ function SpotDetails() {
                     </div>
                 </div>
             ) }
+            {showReviewDelete && (
+                <div className="delete-review-box">
+                    <div className="delete-review-modal">
+                        <DeleteReviewModal onCancel={handleDeleteCancel} onDelete={handleDeleteConfirm}/>
+                        </div>
+                </div>
+            )}
             {currSpot ? (
                 <div>
                     <h1 className="title-of-spot">{currSpot.name}</h1>
@@ -129,6 +150,22 @@ function SpotDetails() {
                             <div className="num-reviews-div">
                               {`${numberReviews(reviews)}`}
                             </div>
+                                </>
+                                )
+                            }
+                        </div> 
+                        <div className="reviews-bigger-div">
+                                <h2 className="avg-stars-h2"> 
+                             {`★${avgRating(reviews)}`}
+                                </h2>
+                            {reviews.length > 0 && (
+                                <>
+                            <h2 className="review-star-average-dot-h2">
+                            ·
+                            </h2>
+                            <h2 className="num-reviews-h2">
+                              {`${numberReviews(reviews)}`}
+                            </h2>
                                 </>
                                 )
                             }
@@ -168,7 +205,9 @@ function SpotDetails() {
                                         {(sessionUser !== undefined) && (
                                             <div className="delete-button-box">
                                         {isUsersReview(review, sessionUser) && (
-                                            <button>delete review</button>
+                                            <button onClick={(e) => {
+                                                handleDeleteClick(review.id)
+                                            }}>Delete review</button>
                                             )}
                                             </div>
                                             )}

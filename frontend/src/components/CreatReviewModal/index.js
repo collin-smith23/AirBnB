@@ -9,6 +9,7 @@ function StarRating({stars, setStars, setHoveredStar}) {
 
     const handleStarClick = (star) => {
         setStars(star);
+        setHoveredStar(0); 
     }
 
     return (
@@ -48,16 +49,14 @@ function PostReviewFormModal() {
     const validReview = review.length > 10;
     const validStars = stars > 0;
     
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
     
-        const res = await dispatch(reviewActions.postReview(spotId, review, stars))
-                if(res) {
-                    onclose();
+                dispatch(reviewActions.postReview(spotId, review, stars))
                     window.location.reload();
-                }
+
     }
-    console.log(stars)
+    // console.log(stars)
 
     return (
         <div className='review-form-box'>

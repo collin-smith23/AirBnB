@@ -16,3 +16,39 @@
     border-radius: 10px;
     padding: 20px;
   }
+
+  .city-state-review-span{
+    display: flex;
+    flex-direction: row;
+    font-size: 20px;
+  }
+
+  .avg-rating-div {
+    position: relative;
+    left: 50%;
+  }
+
+  .update-button a{
+    text-decoration: none;
+    color: black;
+  }
+
+  .update-button {
+    margin-right: 10px;
+    margin-top: 15px ;
+    width: 65px;
+  }
+
+  .delete-button {
+    width: 65px;
+  }
+
+  .spot-price-div {
+    margin-top:  7.5px;
+    font-size: 20px;
+  }
+
+  .create-new-spot-btn {
+    text-decoration: none;
+    color: black;
+  }

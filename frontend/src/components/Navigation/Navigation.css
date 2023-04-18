@@ -8,8 +8,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    align-content: flex-start;
+    /* align-content: flex-start; */
     cursor: pointer;
+    border: 2px solid black;
 }
 
 .home-button-container{
@@ -32,32 +33,46 @@
     width: 175px;
 }
 
-/* .session-links{
-    list-style-type: none;
-    position: absolute;
-    width: 75px;
-    right: 10px;
-    top: -10px;
-} */
+.session-links{
+    margin-right: 45px;
+    cursor: pointer;
+}
 
 .profile-dropdown li:not(.logged-in):hover{
     font-weight: bold;
 }
 
 .logged-in{
-    cursor: default;
+    cursor: pointer;
+    margin-right: 25px;
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
 
-.create-spot-button-box {
+.log-out-button {
+    cursor: pointer;
+    margin-right: 25px;
+    margin-bottom: 7.5px;
+    margin-top: 7.5px;
+    border-radius: 20%;
+}
+
+.create-spot-button-box-nav {
     position: absolute;
-    right: 60px;
+    right: 180px;
     top: 26.5px;
     cursor: pointer;
     z-index: 1;
 }
 
 .manage-spots{
-    color: gray;
+    color: black;
+    border-top: 2px solid gray;
+    border-bottom: 2px solid gray;
+    margin-bottom: 3px;
+    text-decoration: none;
+    margin-right: 30px;
+    margin-left: 0px;
 }
 
 .nav-bar {
@@ -66,6 +81,7 @@
 
 .drop-down-button-box {
     cursor: pointer;
+    align-items: center;
 }
 
 

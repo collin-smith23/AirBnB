@@ -20,10 +20,10 @@ function Navigation({ isLoaded }){
         </NavLink>
       </li>
     </ul>
-    <div className='create-spot-button-box'>
+    <div className='create-spot-button-box-nav'>
         {isLoaded && sessionUser && (
           <NavLink to='/spots/new'>
-              <span className='create-spot-button' >Create a Spot</span>
+              <span className='create-spot-button-nav' >Create a Spot</span>
             </NavLink>
         )}
         </div>

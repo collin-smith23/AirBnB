@@ -23,7 +23,7 @@
     margin-bottom: 50px;
     margin-top: 15px;
     width: 350px;
-    height: 35px;
+    height: 100px;
     border-radius: 5%;
     background-color: rgb(255, 91, 91);
     cursor: pointer;
@@ -34,6 +34,22 @@
     cursor: not-allowed;
 }
 
+.signup-form {
+    height: 350px;
+    width: 400px;
+    border: 1px solid gray;
+    border-radius: 5%;
+}
+
+.signup-form-box {
+    border: 1px solid gray;
+    border-radius: 5%;
+}
+
 h1{
-    margin-top: -15px;
+    margin-top: 7px;
+}
+
+input{
+    height: 50px;
 }

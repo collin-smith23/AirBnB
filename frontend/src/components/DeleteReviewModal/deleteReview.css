@@ -15,4 +15,31 @@
     background-color: white;
     border-radius: 10px;
     padding: 20px;
+    width: 450px;
+    align-items: center;
+}
+
+.delete-review-item-box{
+    align-items: center;
+}
+
+.yes-delete-btn{
+    width: 350px;
+    height: 50px;
+    margin-bottom: 15px;
+    background-color: rgb(226, 92, 92);
+    color: white;
+    margin-left: 55px;
+}
+
+.no-keep-btn{
+    width: 350px;
+    height: 50px;
+    background-color: gray;
+    color: white;
+    margin-left: 55px;
+}
+
+h3{
+    margin-left: 55px;
 }

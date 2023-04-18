@@ -19,7 +19,7 @@ module.exports = {
       {
         spotId: 2,
         url: 'https://imgs.search.brave.com/f_ODGojPK-AxNm7cDkebT5D2p1_-ysF46MbLRapy2Ds/rs:fit:550:734:1/g:ce/aHR0cHM6Ly9yb29o/b21lLmNvbS93cC1j/b250ZW50L3VwbG9h/ZHMvMjAxNy8wOS9i/ZWF1dGlmdWwtaG91/c2UtZGVzaWduMy5q/cGc',
-        preview: false
+        preview: true
       },
       {
         spotId: 3,

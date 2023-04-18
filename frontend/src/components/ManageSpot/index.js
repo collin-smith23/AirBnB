@@ -43,7 +43,12 @@ function ManageSpots(){
 
     const averageRating = (spot) => {
         if (spot.avgRating === null) spot.avgRating = 'New'
+        if (spot.avgRating !== 'New'){
+            if (spot.avgRating === parseFloat(spot.avgRating)) return spot.avgRating.toFixed(1)
+        return spot.avgRating.toFixed(2)
+        }
         return spot.avgRating
+        
     }
 
     useEffect(() => {
@@ -67,27 +72,28 @@ function ManageSpots(){
                     </div>
                 </div>
                 )}
-            <h1>Manage Spots</h1>
-            <button>
-            <NavLink to='/spots/new'>Create New Spot</NavLink>
-            </button>
+            <h2 className='manage-spot-title'>Manage Spots</h2>
 
+            <button className='create-new-spot-btn-box'>
+            <NavLink to='/spots/new' className='create-new-spot-btn'>Create New Spot</NavLink>
+            </button>
         <div className='spots-slot'>
             {spots.map(spot=> (
                 <div className='spot-slot' title={spot.name} >
                     <div className='spot-select' title={spot.name}  onClick={() => window.location.href = `${spot.id}`}>
                 <img className='spot-image' src={spot.previewImage} alt={spot.name} />
-                <span>{spot.city}, {spot.state}
-                    <div className='avg-rating'>{`⭐ ${averageRating(spot)}`}</div>
-                    <div className='spot-price'>{`$${spot.price} night`}</div>
+                <span className='city-state-review-span'>
+                <div>{spot.city}, {spot.state} </div>
+                    <div className='avg-rating-div'>{`⭐ ${averageRating(spot)}`}</div>
                 </span>
+                    <div className='spot-price-div'>{`$${spot.price} night`}</div>
                     </div>
                 <div className='delete-update-buttons'>
-                    <button className='delete-button' onClick={() => handleDeleteClick(spot.id)}>Delete</button>
-
                     <button className='update-button'>
                         <NavLink to={`/spots/${spot.id}/edit`}>Update</NavLink>
                     </button>
+
+                    <button className='delete-button' onClick={() => handleDeleteClick(spot.id)}>Delete</button>
                 </div>
                 </div>
             ))}

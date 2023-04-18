@@ -1,0 +1,24 @@
+.delete-spot-modal{
+    width: 450px;
+}
+
+.yes-no-delete-buttons-box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.yes-delete-btn{
+    width: 350px;
+    height: 50px;
+    margin-bottom: 15px;
+    background-color: rgb(226, 92, 92);
+    color: white;
+}
+
+.no-keep-btn{
+    width: 350px;
+    height: 50px;
+    background-color: gray;
+    color: white;
+}

@@ -14,8 +14,10 @@ function DeleteSpotModal(props) {
       <div className="modal-content">
         <h1>Confirm Delete</h1>
         <h2>Are you sure you want to remove this spot from the listings?</h2>
+          <div className='yes-no-delete-buttons-box'>
           <button className='yes-delete-btn' onClick={props.onDelete}>Yes (Delete Spot)</button>
           <button className='no-keep-btn' onClick={props.onCancel}>No (Keep Spot)</button>
+          </div>
       </div>
     </div>
   );

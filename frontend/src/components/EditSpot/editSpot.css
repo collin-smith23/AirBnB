@@ -1,0 +1,108 @@
+.error-message {
+    color: red
+}
+
+.create-spot-form-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .create-spot-form {
+    width: 1200px;
+    padding: 50px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .create-spot-form h1,
+  .create-spot-form h2,
+  .create-spot-form h3 {
+    position: relative;
+    padding-bottom: 10px;
+  }
+  
+  .create-spot-form h2::before,
+  .create-spot-form h3::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .create-spot-form h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  
+  .create-spot-form h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 40px;
+  }
+  
+  .create-spot-form p {
+    font-size: 16px;
+    color: #777;
+    margin-bottom: 30px;
+  }
+  
+  .create-spot-form .address-input {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .create-spot-form label {
+    display: block;
+    margin-bottom: 20px;
+  }
+  
+  .create-spot-form input[type="text"],
+  .create-spot-form input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    margin-top: 5px;
+  }
+  
+  .create-spot-form .new-spot-description {
+    height: 150px;
+    width: 500px;
+    resize: vertical;
+  }
+  
+  .create-spot-form .error-message {
+    color: red;
+    margin-top: 5px;
+    font-size: 14px;
+  }
+  
+  .create-spot-form label > input[type="text"]:focus,
+  .create-spot-form label > input[type="number"]:focus {
+    outline: none;
+    border: 1px solid #777;
+  }
+  
+  .create-spot-form button[type="submit"] {
+    background-color: #008489;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .create-spot-form button[type="submit"]:hover {
+    background-color: #007272;
+  }

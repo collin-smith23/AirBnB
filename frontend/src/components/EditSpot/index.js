@@ -73,8 +73,8 @@ function EditSpot(){
 
     return (
         <div className="create-spot-form-box">
-                <h1 className='create-spot-title'>Update a Spot</h1>
             <form className='create-spot-form' onSubmit={handleSubmit}>
+                <h1 className='create-spot-title'>Update a Spot</h1>
                 <h2 className='asking-for-new-spot'>Where's your place located?</h2>
                 <p>Guests will only get your exact address once they booked a reservation</p>
                     <div className = 'address-input'>

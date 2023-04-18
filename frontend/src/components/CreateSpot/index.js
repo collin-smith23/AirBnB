@@ -152,14 +152,14 @@ function CreateSpot(){
                 <p>Catch guests' attention with a spot title that highlights what makes your place special</p>
                     <input name='name' className='create-spot-input' placeholder='Name of your spot' value={name} onChange={(e) => setName(e.target.value)}></input>
                     {errors.includes('Name is required') && <div className='error-message'>Name is required</div>}
-                <h3 className='set-price-for-spot'>Set a base price for your spot</h3>
+                <h2 className='set-price-for-spot'>Set a base price for your spot</h2>
                 <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
                 <label>
                     $
                     <input name='price' className='create-spot-input' placeholder='Price per night (USD)' value={price} onChange={(e) => setPrice(e.target.value)}></input>
                     {errors.includes('Price is required') && <div className='error-message'>Price is required</div>}
                 </label>
-                <h3 className='upload-photo-section'>Liven up your spot with photos</h3>
+                <h2 className='upload-photo-section'>Liven up your spot with photos</h2>
                 <p>Submit a link to at least one photo to publish your spot.</p>
                     <input className='preview-image-input' type='text' placeholder='Preview Image Url' value={previewImage.url} onChange={(e) => handleImageInput(e.target.value, 0)}></input>
                     {errors.includes('Preview image is required') && <div className='error-message'>Preview Image is required</div>}

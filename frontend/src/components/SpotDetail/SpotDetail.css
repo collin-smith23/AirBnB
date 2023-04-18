@@ -107,17 +107,24 @@
   }
 
 
-  .reviews-bigger-div {
-
+  .reviews-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: 10px;
   }
-
   
 .avg-stars-h2, .num-reviews-h2 {
+  margin: 10px;
+}
 
+.num-reviews-h2{
+  margin-top: 15px;
 }
 
 .review-star-average-dot-h2 {
-
+  margin-top: 15px;
 }
 
 /* Style for the show review button */

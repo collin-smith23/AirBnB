@@ -171,6 +171,8 @@ function SpotDetails() {
                             <div className="reviews-bigger-div">
 
                         <div className="reviews-bigger-div">
+                            <div className="reviews-container">
+
                                 <h2 className="avg-stars-h2"> 
                              {`★${avgRating(reviews)}`}
                                 </h2>
@@ -185,6 +187,7 @@ function SpotDetails() {
                                 </>
                                 )
                             }
+                            </div>
                         </div> 
                         {(sessionUser !== undefined) && (
                             <>
